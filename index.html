@@ -812,4 +812,140 @@
       </div>
 
       <div class="grid">
-        <div class="
+        <div class="portrait">
+          <span class="corner tl"></span>
+          <span class="corner tr"></span>
+          <span class="corner bl"></span>
+          <span class="corner br"></span>
+          <img src="eulr.png" alt="EULR-03.401">
+          <div class="label">EULR.03.401 // ОПОЗНАНО</div>
+        </div>
+
+        <div class="data" id="data">
+          <div class="section">
+            <h2>Базовые параметры</h2>
+            <div class="row"><span class="k">Класс:</span><span class="v">Replika — EULR</span></div>
+            <div class="row"><span class="k">Серия:</span><span class="v">Eule // "Сова"</span></div>
+            <div class="row"><span class="k">Назначение:</span><span class="v">Медицинский отдел</span></div>
+            <div class="row"><span class="k">Статус:</span><span class="v ok">АКТИВЕН</span></div>
+            <div class="row"><span class="k">Приписка:</span><span class="v">ERES — 427 Медицинский отдел</span></div>
+          </div>
+
+          <div class="section">
+            <h2>Внешние характеристики</h2>
+            <div class="row"><span class="k">Рост:</span><span class="v">165 см</span></div>
+            <div class="row"><span class="k">Волосы:</span><span class="v">Короткие</span></div>
+            <div class="row"><span class="k">Особые метки:</span><span class="v">Заколка из красного металла в форме ветки гладиолуса</span></div>
+          </div>
+
+          <div class="section">
+            <h2>Психопрофиль</h2>
+            <div class="row"><span class="k">Стабильность:</span>
+              <span class="v"><span class="bar" style="--w:100%"></span> 100%</span>
+            </div>
+            <div class="row"><span class="k">Память:</span>
+              <span class="v"><span class="bar" style="--w:100%"></span> 100%</span>
+            </div>
+            <div class="row"><span class="k">Отклонения:</span><span class="v ok">НЕ ОБНАРУЖЕНЫ</span></div>
+            <div class="row"><span class="k">Примечания:</span>
+              <span class="v">—</span>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>Служебная история</h2>
+            <div class="row"><span class="k">Цикл 3021-04:</span><span class="v">Прибытие на объект</span></div>
+            <div class="row"><span class="k">Цикл 3021-11:</span><span class="v">Назначение мед. корпус, сектор B</span></div>
+            <div class="row"><span class="k">Цикл 3022-02:</span><span class="v">Плановое обслуживание ядра</span></div>
+            <div class="row"><span class="k">Цикл 3022-02:</span><span class="v">Возвращена в строй. Отклонений не выявлено.</span></div>
+          </div>
+
+          <div class="section">
+            <h2>Примечание наблюдателя</h2>
+            <div class="row"><span class="v">
+              "Замечательный пример совы, на который надо ровняться. Добрая, заботливая и веселая."
+              <br>— EULR.546
+            </span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="keys">
+          <span>F1</span> СПРАВКА
+          <span>F5</span> ОБНОВИТЬ
+          <span>ESC</span> ВЫХОД
+        </div>
+        <div id="clock">--:--:--</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ===== Прогресс boot ===== */
+  const bootBar = document.getElementById('bootBar');
+  let bootProgress = 0;
+  const bootInterval = setInterval(() => {
+    bootProgress = Math.min(100, bootProgress + 4 + Math.random() * 6);
+    bootBar.style.setProperty('--w', bootProgress + '%');
+    if (bootProgress >= 100) clearInterval(bootInterval);
+  }, 220);
+
+  /* ===== Переход на досье ===== */
+  function openDossier() {
+    const boot = document.getElementById('boot');
+    const dossier = document.getElementById('dossier');
+    boot.classList.add('done');
+    setTimeout(() => {
+      boot.style.display = 'none';
+      dossier.classList.add('visible');
+    }, 800);
+  }
+
+  /* ===== Часы в досье ===== */
+  function tick() {
+    const el = document.getElementById('clock');
+    if (!el) return;
+    const d = new Date();
+    const p = n => String(n).padStart(2, '0');
+    el.textContent = `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+  }
+  setInterval(tick, 1000); tick();
+
+  /* ===== Глитчи в досье ===== */
+  const glitch = document.getElementById('glitch');
+  function scheduleGlitch() {
+    const delay = 4000 + Math.random() * 9000;
+    setTimeout(() => {
+      glitch.classList.add('active');
+      setTimeout(() => glitch.classList.remove('active'), 200);
+      scheduleGlitch();
+    }, delay);
+  }
+  scheduleGlitch();
+
+  /* ===== Клавиши ===== */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'F5') { e.preventDefault(); location.reload(); }
+    if (e.key === 'Escape') {
+      document.body.style.transition = 'opacity .4s';
+      document.body.style.opacity = '0';
+      setTimeout(() => {
+        document.body.innerHTML =
+          '<div style="color:#e8a87c;font-family:monospace;background:#000;height:100vh;display:flex;align-items:center;justify-content:center;letter-spacing:4px">СВЯЗЬ ПРЕРВАНА<span style="animation:blink 1s steps(2) infinite">_</span></div>';
+      }, 400);
+    }
+  });
+
+  /* ===== Микро-дрожание данных ===== */
+  const data = document.getElementById('data');
+  setInterval(() => {
+    if (Math.random() > 0.9) {
+      data.style.transform = `translate(${Math.random()*1-0.5}px, ${Math.random()*1-0.5}px)`;
+      setTimeout(() => data.style.transform = 'translate(0,0)', 60);
+    }
+  }, 500);
+</script>
+</body>
+</html>
