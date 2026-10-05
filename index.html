@@ -9,10 +9,21 @@
     --peach: #e8a87c;
     --peach-dim: #8a6244;
     --peach-soft: #f2c4a0;
+    --peach-deep: #6b4526;
     --bg: #0a0705;
     --panel: #17100b;
     --scan: rgba(232, 168, 124, 0.06);
     --glow: 0 0 4px rgba(232,168,124,.5), 0 0 14px rgba(232,168,124,.22);
+
+    /* Отдельные тона для boot-экрана */
+    --desk-1: #1a0f08;
+    --desk-2: #2a1810;
+    --win-face: #d9b291;
+    --win-face-2: #c99b74;
+    --win-border: #4a2f1c;
+    --win-title: #7a4a2a;
+    --win-title-2: #5a3520;
+    --win-text: #2a1810;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,13 +36,350 @@
     overflow: hidden;
   }
 
-  /* ===== Пиксельный скроллбар (Firefox) ===== */
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--peach-dim) #0d0805;
+  /* ================= BOOT-ЭКРАН ================= */
+  .boot {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background:
+      radial-gradient(ellipse at 70% 30%, #2a1810 0%, #0a0705 60%, #000 100%);
+    overflow: hidden;
+    transition: opacity .8s ease, transform .8s ease;
   }
 
-  /* ===== CRT-обёртка ===== */
+  .boot.done {
+    opacity: 0;
+    transform: scale(1.04);
+    pointer-events: none;
+  }
+
+  /* --- Звёздное небо (генерируется через ::before как сетка точек) --- */
+  .boot::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      /* крупные звёзды */
+      radial-gradient(2px 2px at 12% 18%, var(--peach-soft), transparent 60%),
+      radial-gradient(2px 2px at 28% 72%, var(--peach-soft), transparent 60%),
+      radial-gradient(2px 2px at 45% 32%, #ffffff, transparent 60%),
+      radial-gradient(2px 2px at 67% 12%, var(--peach-soft), transparent 60%),
+      radial-gradient(2px 2px at 82% 62%, #ffffff, transparent 60%),
+      radial-gradient(2px 2px at 91% 22%, var(--peach-soft), transparent 60%),
+      radial-gradient(2px 2px at 8% 88%, #ffffff, transparent 60%),
+      radial-gradient(2px 2px at 55% 90%, var(--peach-soft), transparent 60%),
+      /* мелкие звёзды */
+      radial-gradient(1px 1px at 5% 40%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 18% 55%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 33% 12%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 41% 68%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 52% 22%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 61% 45%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 72% 78%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 78% 35%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 88% 55%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 95% 75%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 3% 65%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 24% 92%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 47% 5%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 66% 95%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 79% 5%, var(--peach-dim), transparent 60%),
+      radial-gradient(1px 1px at 36% 82%, var(--peach-dim), transparent 60%);
+    animation: starsTwinkle 3s infinite alternate;
+    opacity: .95;
+  }
+
+  @keyframes starsTwinkle {
+    0% { opacity: .75; }
+    100% { opacity: 1; }
+  }
+
+  /* --- Мерцающие крестики-звёзды --- */
+  .boot .sparkle {
+    position: absolute;
+    width: 14px; height: 14px;
+    pointer-events: none;
+  }
+  .boot .sparkle::before,
+  .boot .sparkle::after {
+    content: "";
+    position: absolute;
+    background: var(--peach-soft);
+    box-shadow: 0 0 6px var(--peach-soft);
+  }
+  .boot .sparkle::before {
+    left: 50%; top: 0; width: 2px; height: 100%;
+    transform: translateX(-50%);
+  }
+  .boot .sparkle::after {
+    top: 50%; left: 0; height: 2px; width: 100%;
+    transform: translateY(-50%);
+  }
+
+  .boot .sparkle.s1 { top: 15%; left: 8%; animation: sparklePulse 2s infinite; }
+  .boot .sparkle.s2 { top: 60%; left: 22%; animation: sparklePulse 2s .4s infinite; }
+  .boot .sparkle.s3 { top: 25%; left: 78%; animation: sparklePulse 2s .8s infinite; }
+  .boot .sparkle.s4 { top: 78%; left: 88%; animation: sparklePulse 2s 1.2s infinite; }
+  .boot .sparkle.s5 { top: 42%; left: 55%; animation: sparklePulse 2s 1.6s infinite; }
+
+  @keyframes sparklePulse {
+    0%, 100% { opacity: .2; transform: scale(.7); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+
+  /* --- Пиксельная сетка поверх неба --- */
+  .boot .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,168,124,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,168,124,.045) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  /* --- Горизонт: «горы» и столбы внизу --- */
+  .boot .horizon {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 30%;
+    background:
+      linear-gradient(180deg, transparent 0%, rgba(107,69,38,.15) 100%),
+      repeating-linear-gradient(90deg,
+        transparent 0 40px,
+        rgba(232,168,124,.05) 40px 42px);
+    pointer-events: none;
+  }
+
+  /* --- Курсор-стрелка --- */
+  .boot .cursor-arrow {
+    position: absolute;
+    width: 20px; height: 24px;
+    top: 60%;
+    left: 65%;
+    pointer-events: none;
+    filter: drop-shadow(2px 2px 0 rgba(0,0,0,.5));
+    animation: cursorMove 6s steps(20) infinite;
+    z-index: 20;
+  }
+
+  .boot .cursor-arrow svg { width: 100%; height: 100%; display: block; }
+
+  @keyframes cursorMove {
+    0%   { top: 58%; left: 62%; }
+    20%  { top: 62%; left: 68%; }
+    40%  { top: 55%; left: 72%; }
+    60%  { top: 48%; left: 60%; }
+    80%  { top: 66%; left: 70%; }
+    100% { top: 58%; left: 62%; }
+  }
+
+  /* --- Окна --- */
+  .win {
+    position: absolute;
+    background: var(--win-face);
+    border: 2px solid var(--win-border);
+    box-shadow:
+      4px 4px 0 0 rgba(0,0,0,.55),
+      inset 1px 1px 0 0 rgba(255,255,255,.5),
+      inset -1px -1px 0 0 rgba(0,0,0,.25);
+    image-rendering: pixelated;
+    z-index: 10;
+  }
+
+  .win .titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 6px;
+    background: var(--win-title);
+    color: var(--win-face);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 0 rgba(0,0,0,.5);
+    border-bottom: 2px solid var(--win-border);
+  }
+
+  .win .titlebar .name { font-weight: bold; }
+
+  .win .titlebar .btns {
+    display: flex;
+    gap: 3px;
+  }
+  .win .titlebar .btns span {
+    display: block;
+    width: 14px; height: 14px;
+    background: var(--win-face);
+    border: 1px solid var(--win-border);
+    box-shadow:
+      inset 1px 1px 0 0 #fff,
+      inset -1px -1px 0 0 rgba(0,0,0,.35);
+    color: var(--win-text);
+    font-size: 10px;
+    line-height: 12px;
+    text-align: center;
+    cursor: default;
+  }
+
+  .win .body {
+    padding: 10px 12px;
+    color: var(--win-text);
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  /* --- Кнопка OK --- */
+  .ok-btn {
+    display: inline-block;
+    padding: 8px 22px;
+    background: var(--win-face);
+    border: 2px solid var(--win-border);
+    box-shadow:
+      inset 2px 2px 0 0 #fff,
+      inset -2px -2px 0 0 rgba(0,0,0,.35),
+      3px 3px 0 0 rgba(0,0,0,.45);
+    color: var(--win-text);
+    font-family: inherit;
+    font-size: 16px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    image-rendering: pixelated;
+    transition: none;
+  }
+
+  .ok-btn:active {
+    box-shadow:
+      inset -2px -2px 0 0 #fff,
+      inset 2px 2px 0 0 rgba(0,0,0,.35),
+      1px 1px 0 0 rgba(0,0,0,.45);
+    transform: translate(2px, 2px);
+  }
+
+  /* --- Папки на рабочем столе --- */
+  .desktop-icons {
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    z-index: 5;
+  }
+
+  .desktop-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 64px;
+    color: var(--peach-soft);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-align: center;
+    text-shadow: 1px 1px 0 rgba(0,0,0,.7);
+  }
+
+  .desktop-icon svg {
+    width: 38px;
+    height: 32px;
+    filter: drop-shadow(2px 2px 0 rgba(0,0,0,.55));
+    image-rendering: pixelated;
+  }
+
+  /* --- Позиции окон --- */
+  .win-ok      { top: 40%; left: 15%; width: 240px; }
+  .win-night   { top: 42%; left: 40%; width: 340px; animation: winShake 4s infinite; }
+  .win-dream   { top: 62%; left: 26%; width: 220px; }
+  .win-notes   { top: 60%; left: 55%; width: 300px; }
+
+  .win-notes .body {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 10px;
+  }
+
+  .note {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    color: var(--win-text);
+  }
+  .note svg {
+    width: 42px; height: 38px;
+    filter: drop-shadow(1px 1px 0 rgba(0,0,0,.35));
+  }
+
+  @keyframes winShake {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-1px, 1px); }
+  }
+
+  /* --- Часы в часах символа --- */
+  .dream-body {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* --- Прогресс загрузки внизу --- */
+  .boot .loading {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    width: min(560px, 80vw);
+    color: var(--peach);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-align: center;
+    z-index: 15;
+    text-shadow: var(--glow);
+  }
+
+  .boot .loading .bar {
+    width: 100%;
+    height: 14px;
+    margin-top: 8px;
+    border: 2px solid var(--peach-dim);
+    background: #0d0805;
+    box-shadow: inset 0 0 0 1px #000;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .boot .loading .bar::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    width: var(--w, 0%);
+    background:
+      repeating-linear-gradient(90deg,
+        var(--peach) 0 6px,
+        var(--peach-dim) 6px 8px);
+    box-shadow: 0 0 8px rgba(232,168,124,.55);
+    transition: width .25s linear;
+  }
+
+  /* --- Скан-линии CRT поверх boot-экрана --- */
+  .boot .crt-lines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(232,168,124,.07) 0 1px,
+      transparent 1px 3px
+    );
+    pointer-events: none;
+    z-index: 30;
+    animation: flicker 4s infinite;
+  }
+
+  /* ================= ОСНОВНОЙ САЙТ (без изменений) ================= */
   .crt {
     position: relative;
     width: 100vw;
@@ -76,7 +424,6 @@
     92% { opacity: .75; }
   }
 
-  /* ===== Основная панель ===== */
   .screen {
     position: relative;
     width: min(1100px, 94vw);
@@ -91,17 +438,16 @@
       0 0 30px rgba(232,168,124,.13),
       0 0 80px rgba(232,168,124,.07);
     text-shadow: var(--glow);
-    animation: boot 1.2s ease-out;
+    animation: bootScreen 1.2s ease-out;
   }
 
-  @keyframes boot {
+  @keyframes bootScreen {
     0% { opacity: 0; transform: scaleY(0.02); filter: brightness(3); }
     40% { opacity: 1; transform: scaleY(0.02); }
     60% { transform: scaleY(1.02); }
     100% { transform: scaleY(1); filter: brightness(1); }
   }
 
-  /* ===== Верхняя строка ===== */
   .topbar {
     display: flex;
     justify-content: space-between;
@@ -117,7 +463,6 @@
 
   @keyframes blink { 50% { opacity: 0; } }
 
-  /* ===== Заголовок ===== */
   .title {
     margin-top: 16px;
     font-size: 30px;
@@ -137,7 +482,6 @@
     color: var(--peach-dim);
   }
 
-  /* ===== Сетка содержимого ===== */
   .grid {
     margin-top: 18px;
     flex: 1;
@@ -147,7 +491,6 @@
     overflow: hidden;
   }
 
-  /* ===== Портрет ===== */
   .portrait {
     border: 1px solid var(--peach-dim);
     background: #100a06;
@@ -233,7 +576,6 @@
   .corner.bl { bottom: 6px; left: 6px; border-bottom: 1px solid; border-left: 1px solid; }
   .corner.br { bottom: 6px; right: 6px; border-bottom: 1px solid; border-right: 1px solid; }
 
-  /* ===== Данные ===== */
   .data {
     overflow-y: auto;
     padding-right: 14px;
@@ -241,13 +583,11 @@
     line-height: 1.55;
   }
 
-  /* ===== ПИКСЕЛЬНЫЙ СКРОЛЛБАР (WebKit) ===== */
+  /* Пиксельный скроллбар */
   .data::-webkit-scrollbar {
     width: 14px;
     background: transparent;
   }
-
-  /* Дорожка — «утопленная» рамка с сеткой пикселей */
   .data::-webkit-scrollbar-track {
     background:
       repeating-linear-gradient(
@@ -260,17 +600,13 @@
     border: 1px solid var(--peach-dim);
     box-shadow: inset 0 0 0 1px #000;
   }
-
-  /* Бегунок — квадратный, со «ступеньками» */
   .data::-webkit-scrollbar-thumb {
     background: var(--peach-dim);
     border: 1px solid var(--peach);
     box-shadow:
       inset -2px -2px 0 0 #5a3f2a,
       inset  2px  2px 0 0 var(--peach-soft);
-    image-rendering: pixelated;
   }
-
   .data::-webkit-scrollbar-thumb:hover {
     background: var(--peach);
     border-color: var(--peach-soft);
@@ -278,7 +614,6 @@
       inset -2px -2px 0 0 #7a5638,
       inset  2px  2px 0 0 #f8d9bf;
   }
-
   .data::-webkit-scrollbar-thumb:active {
     background: var(--peach-soft);
     border-color: #fff2e2;
@@ -286,53 +621,9 @@
       inset  2px  2px 0 0 #7a5638,
       inset -2px -2px 0 0 #f8d9bf;
   }
+  .data::-webkit-scrollbar-corner { background: transparent; }
 
-  /* Уголок между полосами — тоже квадратный */
-  .data::-webkit-scrollbar-corner {
-    background: #0d0805;
-    border: 1px solid var(--peach-dim);
-  }
-
-  /* Кнопки-стрелки сверху/снизу — в стиле пиксельных */
-  .data::-webkit-scrollbar-button:single-button {
-    background: var(--peach-dim);
-    border: 1px solid var(--peach);
-    box-shadow:
-      inset -2px -2px 0 0 #5a3f2a,
-      inset  2px  2px 0 0 var(--peach-soft);
-    height: 14px;
-    width: 14px;
-    display: block;
-  }
-
-  .data::-webkit-scrollbar-button:single-button:hover {
-    background: var(--peach);
-    border-color: var(--peach-soft);
-  }
-
-  .data::-webkit-scrollbar-button:single-button:vertical:decrement {
-    background-image:
-      linear-gradient(45deg, transparent 50%, var(--peach-soft) 50%),
-      linear-gradient(135deg, var(--peach-soft) 50%, transparent 50%),
-      linear-gradient(180deg, var(--peach) 0%, var(--peach-dim) 100%);
-    background-size: 6px 6px, 6px 6px, 100% 100%;
-    background-position: center 65%, center 65%, 0 0;
-    background-repeat: no-repeat;
-  }
-
-  .data::-webkit-scrollbar-button:single-button:vertical:increment {
-    background-image:
-      linear-gradient(45deg, transparent 50%, var(--peach-soft) 50%),
-      linear-gradient(135deg, var(--peach-soft) 50%, transparent 50%),
-      linear-gradient(0deg, var(--peach) 0%, var(--peach-dim) 100%);
-    background-size: 6px 6px, 6px 6px, 100% 100%;
-    background-position: center 35%, center 35%, 0 0;
-    background-repeat: no-repeat;
-  }
-
-  /* ===== Секции досье ===== */
   .section { margin-bottom: 18px; }
-
   .section h2 {
     font-size: 13px;
     letter-spacing: 3px;
@@ -349,10 +640,8 @@
     gap: 10px;
     padding: 2px 0;
   }
-
   .row .k { color: var(--peach-dim); }
   .row .v { color: var(--peach); }
-
   .v.warn { color: #d67a5c; text-shadow: 0 0 6px rgba(214,122,92,.55); }
   .v.ok   { color: #b8c98a; text-shadow: 0 0 6px rgba(184,201,138,.5); }
 
@@ -373,7 +662,6 @@
     box-shadow: 0 0 6px rgba(232,168,124,.6);
   }
 
-  /* ===== Нижняя панель ===== */
   .footer {
     margin-top: 14px;
     border-top: 1px dashed var(--peach-dim);
@@ -384,7 +672,6 @@
     color: var(--peach-dim);
     letter-spacing: 1px;
   }
-
   .footer .keys span {
     color: var(--peach);
     border: 1px solid var(--peach-dim);
@@ -392,7 +679,6 @@
     margin-right: 4px;
   }
 
-  /* ===== Глитч-оверлей ===== */
   .glitch {
     position: absolute;
     inset: 0;
@@ -402,16 +688,13 @@
     opacity: 0;
     z-index: 9;
   }
-
   .glitch.active { animation: glitch 0.18s steps(3) 1; }
-
   @keyframes glitch {
     0%   { opacity: .22; transform: translateX(-3px); }
     50%  { opacity: .08; transform: translateX(4px); }
     100% { opacity: 0; transform: translateX(0); }
   }
 
-  /* ===== Адаптив ===== */
   @media (max-width: 720px) {
     .grid {
       grid-template-columns: 1fr;
@@ -428,145 +711,109 @@
     .data { overflow: visible; padding-right: 0; }
     .title { font-size: 20px; letter-spacing: 3px; }
     .row { grid-template-columns: 130px 1fr; font-size: 14px; }
+
+    /* Boot-экран на мобиле — компактнее */
+    .win-ok    { top: 22%; left: 8%;  width: 200px; }
+    .win-night { top: 36%; left: 18%; width: 260px; }
+    .win-dream { top: 55%; left: 12%; width: 200px; }
+    .win-notes { top: 70%; left: 30%; width: 260px; }
+    .desktop-icons { display: none; }
   }
 </style>
 </head>
 <body>
-  <div class="crt">
-    <div class="glitch" id="glitch"></div>
 
-    <div class="screen">
-      <div class="topbar">
-        <span>AEON-OS v2.7 // EINHEIT-DATENBANK</span>
-        <span>ПОЛЬЗОВАТЕЛЬ: <span class="blink">█</span></span>
-      </div>
+<!-- ================= BOOT-ЭКРАН ================= -->
+<div class="boot" id="boot">
+  <div class="grid-overlay"></div>
+  <div class="horizon"></div>
 
-      <div class="title">
-        <span>ДОСЬЕ // EULR</span>
-        <span class="id">ID: EULR.03.401</span>
-      </div>
+  <!-- Мерцающие крестики-звёзды -->
+  <span class="sparkle s1"></span>
+  <span class="sparkle s2"></span>
+  <span class="sparkle s3"></span>
+  <span class="sparkle s4"></span>
+  <span class="sparkle s5"></span>
 
-      <div class="grid">
-        <!-- Портрет -->
-        <div class="portrait">
-          <span class="corner tl"></span>
-          <span class="corner tr"></span>
-          <span class="corner bl"></span>
-          <span class="corner br"></span>
-          <img src="eulr.png" alt="EULR-03.401">
-          <div class="label">EULR.03.401 // ОПОЗНАНО</div>
-        </div>
-
-        <!-- Данные -->
-        <div class="data" id="data">
-
-          <div class="section">
-            <h2>Базовые параметры</h2>
-            <div class="row"><span class="k">Класс:</span><span class="v">Replika — EULR</span></div>
-            <div class="row"><span class="k">Серия:</span><span class="v">Eule // "Сова"</span></div>
-            <div class="row"><span class="k">Назначение:</span><span class="v">Медицинский отдел</span></div>
-            <div class="row"><span class="k">Статус:</span><span class="v ok">АКТИВЕН</span></div>
-            <div class="row"><span class="k">Приписка:</span><span class="v">ERES — 427 Медицинский отдел</span></div>
-          </div>
-
-          <div class="section">
-            <h2>Внешние характеристики</h2>
-            <div class="row"><span class="k">Рост:</span><span class="v">165 см</span></div>
-            <div class="row"><span class="k">Волосы:</span><span class="v">Короткие</span></div>
-            <div class="row"><span class="k">Особые метки:</span><span class="v">Заколка из красного металла в форме ветки гладиолуса</span></div>
-          </div>
-
-          <div class="section">
-            <h2>Психопрофиль</h2>
-            <div class="row"><span class="k">Стабильность:</span>
-              <span class="v"><span class="bar" style="--w:100%"></span> 100%</span>
-            </div>
-            <div class="row"><span class="k">Память:</span>
-              <span class="v"><span class="bar" style="--w:100%"></span> 100%</span>
-            </div>
-            <div class="row"><span class="k">Отклонения:</span><span class="v ok">НЕ ОБНАРУЖЕНЫ</span></div>
-            <div class="row"><span class="k">Примечания:</span>
-              <span class="v">—</span>
-            </div>
-          </div>
-
-          <div class="section">
-            <h2>Служебная история</h2>
-            <div class="row"><span class="k">Цикл 3021-04:</span><span class="v">Прибытие на объект</span></div>
-            <div class="row"><span class="k">Цикл 3021-11:</span><span class="v">Назначение мед. корпус, сектор B</span></div>
-            <div class="row"><span class="k">Цикл 3022-02:</span><span class="v">Плановое обслуживание ядра</span></div>
-            <div class="row"><span class="k">Цикл 3022-02:</span><span class="v">Возвращена в строй. Отклонений не выявлено.</span></div>
-          </div>
-
-          <div class="section">
-            <h2>Примечание наблюдателя</h2>
-            <div class="row"><span class="v">
-              "Образцовая единица. Рекомендована к продлению срока службы."
-              <br>— LSTR
-            </span></div>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="footer">
-        <div class="keys">
-          <span>F1</span> СПРАВКА
-          <span>F5</span> ОБНОВИТЬ
-          <span>ESC</span> ВЫХОД
-        </div>
-        <div id="clock">--:--:--</div>
-      </div>
+  <!-- Иконки на «рабочем столе» -->
+  <div class="desktop-icons">
+    <div class="desktop-icon">
+      <svg viewBox="0 0 38 32" shape-rendering="crispEdges">
+        <path d="M2 2h14l3 4h17v22H2z" fill="#f2c4a0" stroke="#4a2f1c" stroke-width="1.5"/>
+        <path d="M2 8h34" stroke="#4a2f1c" stroke-width="1.5"/>
+      </svg>
+      <span>Notes</span>
+    </div>
+    <div class="desktop-icon">
+      <svg viewBox="0 0 38 32" shape-rendering="crispEdges">
+        <path d="M2 2h14l3 4h17v22H2z" fill="#e8a87c" stroke="#4a2f1c" stroke-width="1.5"/>
+        <path d="M2 8h34" stroke="#4a2f1c" stroke-width="1.5"/>
+      </svg>
+      <span>Notes 02</span>
     </div>
   </div>
 
-<script>
-  /* Часы */
-  function tick() {
-    const d = new Date();
-    const p = n => String(n).padStart(2, '0');
-    document.getElementById('clock').textContent =
-      `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
-  }
-  setInterval(tick, 1000);
-  tick();
+  <!-- Окно OK -->
+  <div class="win win-ok">
+    <div class="titlebar">
+      <span class="name">dialogue</span>
+      <div class="btns"><span>_</span><span>□</span><span>×</span></div>
+    </div>
+    <div class="body" style="text-align:center; padding: 20px 12px;">
+      <button class="ok-btn" onclick="skipBoot()">OK</button>
+    </div>
+  </div>
 
-  /* Случайные глитчи */
-  const glitch = document.getElementById('glitch');
-  function scheduleGlitch() {
-    const delay = 4000 + Math.random() * 9000;
-    setTimeout(() => {
-      glitch.classList.add('active');
-      setTimeout(() => glitch.classList.remove('active'), 200);
-      scheduleGlitch();
-    }, delay);
-  }
-  scheduleGlitch();
+  <!-- Окно GOOD NIGHT -->
+  <div class="win win-night">
+    <div class="titlebar">
+      <span class="name">message.txt</span>
+      <div class="btns"><span>_</span><span>□</span><span>×</span></div>
+    </div>
+    <div class="body" style="padding: 30px 12px; text-align:center;">
+      <span style="color:#7a4a2a; font-size:18px; letter-spacing:4px;">GOOD NIGHT :)</span>
+    </div>
+  </div>
 
-  /* Клавиши */
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'F5') {
-      e.preventDefault();
-      location.reload();
-    }
-    if (e.key === 'Escape') {
-      document.body.style.transition = 'opacity .4s';
-      document.body.style.opacity = '0';
-      setTimeout(() => {
-        document.body.innerHTML =
-          '<div style="color:#e8a87c;font-family:monospace;background:#000;height:100vh;display:flex;align-items:center;justify-content:center;letter-spacing:4px">СВЯЗЬ ПРЕРВАНА<span style="animation:blink 1s steps(2) infinite">_</span></div>';
-      }, 400);
-    }
-  });
+  <!-- Окно HAVE A NICE DREAM -->
+  <div class="win win-dream">
+    <div class="titlebar">
+      <span class="name">dream.exe</span>
+      <div class="btns"><span>_</span><span>□</span><span>×</span></div>
+    </div>
+    <div class="body dream-body">
+      <svg viewBox="0 0 24 32" width="26" height="34" shape-rendering="crispEdges">
+        <path d="M4 2h16v3H4zM4 5h2v2H4zM18 5h2v2h-2zM2 7h2v18H2zM20 7h2v18h-2zM4 25h2v2H4zM18 25h2v2h-2zM4 27h16v3H4z"
+              fill="none" stroke="#5a3520" stroke-width="1"/>
+        <path d="M8 10h3v3H8zM13 10h3v3h-3zM8 18h3v3H8zM13 18h3v3h-3z" fill="#5a3520"/>
+      </svg>
+      <span style="color:#5a3520; font-size:13px; letter-spacing:2px; line-height:1.3;">
+        HAVE A<br>NICE DREAM.
+      </span>
+    </div>
+  </div>
 
-  /* Лёгкое "дрожание" данных */
-  const data = document.getElementById('data');
-  setInterval(() => {
-    if (Math.random() > 0.9) {
-      data.style.transform = `translate(${Math.random()*1-0.5}px, ${Math.random()*1-0.5}px)`;
-      setTimeout(() => data.style.transform = 'translate(0,0)', 60);
-    }
-  }, 500);
-</script>
-</body>
-</html>
+  <!-- Окно Notes / Aesthetic / Idea -->
+  <div class="win win-notes">
+    <div class="titlebar">
+      <span class="name">documents</span>
+      <div class="btns"><span>_</span><span>□</span><span>×</span></div>
+    </div>
+    <div class="body">
+      <div class="note">
+        <svg viewBox="0 0 42 38" shape-rendering="crispEdges">
+          <path d="M3 2h24l8 8v26H3z" fill="#f2c4a0" stroke="#4a2f1c" stroke-width="1.5"/>
+          <path d="M27 2v8h8" fill="none" stroke="#4a2f1c" stroke-width="1.5"/>
+        </svg>
+        <span>Notes</span>
+      </div>
+      <div class="note">
+        <svg viewBox="0 0 42 38" shape-rendering="crispEdges">
+          <path d="M3 2h24l8 8v26H3z" fill="#b8c98a" stroke="#4a2f1c" stroke-width="1.5"/>
+          <path d="M27 2v8h8" fill="none" stroke="#4a2f1c" stroke-width="1.5"/>
+        </svg>
+        <span>Aesthetic</span>
+      </div>
+      <div class="note">
+        <svg viewBox="0 0 42 38" shape-rendering="crispEdges">
+          <path d="M3 2h24l8 8v26H3z" fill="#e8a87c" stroke="#4a2f1c"
