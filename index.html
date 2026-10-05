@@ -857,7 +857,7 @@
     font-size: 13px;
   }
 
-  /* ===== Постер совы в Краткой сводке ===== */
+  /* ===== Постер совы в Краткой сводке (горизонтальный) ===== */
   .summary-poster-section {
     display: flex;
     justify-content: center;
@@ -868,12 +868,12 @@
   .summary-poster {
     position: relative;
     width: 100%;
-    max-width: 420px;
+    max-width: 720px;
     border: 1px solid var(--peach-dim);
     background: #100a06;
     padding: 8px;
     overflow: hidden;
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 16 / 9;
   }
 
   .summary-poster img {
@@ -911,20 +911,6 @@
     );
     pointer-events: none;
     z-index: 3;
-  }
-
-  .poster-label {
-    position: absolute;
-    left: 8px;
-    right: 8px;
-    bottom: 8px;
-    padding: 4px 8px;
-    text-align: center;
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--peach-dim);
-    background: rgba(10,7,5,.82);
-    z-index: 4;
   }
 
   .section { margin-bottom: 18px; }
@@ -1029,7 +1015,7 @@
     .row.full { font-size: 14px; }
     .tab { padding: 6px 10px; font-size: 10px; letter-spacing: 1px; }
 
-    .summary-poster { max-width: 100%; }
+    .summary-poster { max-width: 100%; aspect-ratio: 4 / 3; }
 
     .win-ok    { top: 22%; left: 8%;  width: 200px; }
     .win-night { top: 36%; left: 18%; width: 260px; }
@@ -1259,7 +1245,6 @@
           <div class="section summary-poster-section">
             <div class="summary-poster">
               <img src="eule_poster.png" alt="EULR.03.401 // Сова">
-              <div class="poster-label">EULR.03.401 // СОВА</div>
             </div>
           </div>
 
