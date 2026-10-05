@@ -37,7 +37,6 @@
     overflow: hidden;
   }
 
-  /* Скан-линии всего экрана */
   .crt::before {
     content: "";
     position: absolute;
@@ -54,7 +53,6 @@
     animation: flicker 4s infinite;
   }
 
-  /* Виньетка */
   .crt::after {
     content: "";
     position: absolute;
@@ -138,7 +136,7 @@
     margin-top: 18px;
     flex: 1;
     display: grid;
-    grid-template-columns: 220px 1fr;
+    grid-template-columns: 160px 1fr;
     gap: 22px;
     overflow: hidden;
   }
@@ -150,9 +148,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
+    padding: 8px;
     position: relative;
     overflow: hidden;
+    align-self: start;
+    aspect-ratio: 3 / 4;
+    max-height: 280px;
   }
 
   .portrait img {
@@ -168,6 +169,7 @@
     display: block;
     position: relative;
     z-index: 1;
+    border: 1px solid rgba(232,168,124,.25);
   }
 
   /* Мерцающий шум поверх фото */
@@ -208,10 +210,10 @@
     left: 0;
     right: 0;
     text-align: center;
-    font-size: 10px;
-    letter-spacing: 2px;
+    font-size: 9px;
+    letter-spacing: 1px;
     color: var(--peach-dim);
-    background: rgba(10,7,5,.7);
+    background: rgba(10,7,5,.75);
     padding: 3px 0;
     z-index: 4;
   }
@@ -264,7 +266,6 @@
   .v.warn { color: #d67a5c; text-shadow: 0 0 6px rgba(214,122,92,.55); }
   .v.ok   { color: #b8c98a; text-shadow: 0 0 6px rgba(184,201,138,.5); }
 
-  /* Полоса состояния */
   .bar {
     display: inline-block;
     width: 140px;
@@ -324,10 +325,16 @@
   @media (max-width: 720px) {
     .grid {
       grid-template-columns: 1fr;
-      grid-template-rows: 220px 1fr;
+      grid-template-rows: auto 1fr;
       overflow-y: auto;
     }
-    .portrait { height: 220px; }
+    .portrait {
+      height: 200px;
+      width: 150px;
+      margin: 0 auto;
+      aspect-ratio: auto;
+      max-height: none;
+    }
     .data { overflow: visible; }
     .title { font-size: 20px; letter-spacing: 3px; }
     .row { grid-template-columns: 130px 1fr; font-size: 14px; }
@@ -350,7 +357,7 @@
       </div>
 
       <div class="grid">
-        <!-- Портрет с изображением -->
+        <!-- Портрет -->
         <div class="portrait">
           <span class="corner tl"></span>
           <span class="corner tr"></span>
