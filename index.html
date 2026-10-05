@@ -48,7 +48,6 @@
     pointer-events: none;
   }
 
-  /* Звёзды — декоративные, не перехватывают клики */
   .boot::before {
     content: "";
     position: absolute;
@@ -189,6 +188,7 @@
     letter-spacing: 1px;
     text-shadow: 1px 1px 0 rgba(0,0,0,.5);
     border-bottom: 2px solid var(--win-border);
+    transition: background .15s ease;
   }
   .win .titlebar .name { font-weight: bold; }
   .win .titlebar .btns { display: flex; gap: 3px; }
@@ -328,13 +328,37 @@
     gap: 12px;
   }
 
+  /* ===== Окно spam.exe — кликабельное ===== */
+  .win-dream {
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .win-dream:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      6px 6px 0 0 rgba(0,0,0,.65),
+      inset 1px 1px 0 0 rgba(255,255,255,.5),
+      inset -1px -1px 0 0 rgba(0,0,0,.25),
+      0 0 14px rgba(232,168,124,.35);
+  }
+  .win-dream:active {
+    transform: translateY(0);
+    box-shadow:
+      2px 2px 0 0 rgba(0,0,0,.65),
+      inset 1px 1px 0 0 rgba(255,255,255,.5),
+      inset -1px -1px 0 0 rgba(0,0,0,.25);
+  }
+  .win-dream:hover .titlebar {
+    background: #9a5a34;
+  }
+
   /* ===== Окно FKLR ===== */
   .win-fkler {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 420px;
-    max-width: 92vw;
+    width: 560px;
+    max-width: 94vw;
     display: none;
     z-index: 80;
     animation: winOpen .25s ease-out;
@@ -360,7 +384,7 @@
     position: relative;
     width: 100%;
     aspect-ratio: 3 / 4;
-    max-height: 60vh;
+    max-height: 72vh;
     overflow: hidden;
     background: #100a06;
     display: flex;
@@ -393,9 +417,9 @@
 
   .win-fkler .caption {
     width: 100%;
-    padding: 6px 10px;
+    padding: 8px 10px;
     text-align: center;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 2px;
     color: var(--peach-dim);
     background: #1a1008;
@@ -776,7 +800,8 @@
     .win-notes { top: 70%; left: 30%; width: 260px; }
     .desktop-icons { display: none; }
 
-    .win-fkler { width: 92vw; }
+    .win-fkler { width: 92vw; max-width: 92vw; }
+    .win-fkler .img-wrap { max-height: 60vh; }
   }
 </style>
 </head>
@@ -830,7 +855,8 @@
     </div>
   </div>
 
-  <div class="win win-dream">
+  <!-- ===== Окно spam.exe — кликабельное ===== -->
+  <div class="win win-dream" id="spamWindow" data-href="https://sites.google.com/view/kilidan" title="Открыть: kilidan">
     <div class="titlebar">
       <span class="name">spam.exe</span>
       <div class="btns"><span>_</span><span>□</span><span>×</span></div>
@@ -1035,15 +1061,12 @@
     /* ===== Привязка событий ===== */
     document.addEventListener('DOMContentLoaded', function () {
 
-      // Кнопка OPEN DOSSIER
       var btnDossier = document.getElementById('btnOpenDossier');
       if (btnDossier) btnDossier.addEventListener('click', openDossier);
 
-      // Папка "Досье EULR.401" — тоже открывает досье
       var iconDossier = document.querySelector('[data-action="dossier"]');
       if (iconDossier) iconDossier.addEventListener('click', openDossier);
 
-      // Папка "Нюдсы FKLR" — открывает окно
       var iconFkler = document.getElementById('iconFkler');
       if (iconFkler) {
         iconFkler.addEventListener('click', function (e) {
@@ -1053,7 +1076,6 @@
         });
       }
 
-      // Кнопка × в окне FKLR — закрывает окно
       var btnClose = document.getElementById('btnCloseFkler');
       if (btnClose) {
         btnClose.addEventListener('click', function (e) {
@@ -1063,7 +1085,16 @@
         });
       }
 
-      // Клик по затемнённой области — не нужно, но оставим закрытие на Esc
+      /* ===== Окно spam.exe — клик открывает ссылку ===== */
+      var spamWindow = document.getElementById('spamWindow');
+      if (spamWindow) {
+        spamWindow.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var url = spamWindow.getAttribute('data-href');
+          if (url) window.open(url, '_blank', 'noopener,noreferrer');
+        });
+      }
     });
 
     /* ===== Часы ===== */
