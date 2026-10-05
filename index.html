@@ -15,7 +15,6 @@
     --scan: rgba(232, 168, 124, 0.06);
     --glow: 0 0 4px rgba(232,168,124,.5), 0 0 14px rgba(232,168,124,.22);
 
-    /* Boot-экран */
     --win-face: #d9b291;
     --win-border: #4a2f1c;
     --win-title: #7a4a2a;
@@ -49,7 +48,6 @@
     pointer-events: none;
   }
 
-  /* Звёздное небо */
   .boot::before {
     content: "";
     position: absolute;
@@ -88,7 +86,6 @@
     100% { opacity: 1; }
   }
 
-  /* Мерцающие крестики */
   .boot .sparkle {
     position: absolute;
     width: 14px; height: 14px;
@@ -142,7 +139,6 @@
     pointer-events: none;
   }
 
-  /* Курсор-стрелка */
   .boot .cursor-arrow {
     position: absolute;
     width: 20px; height: 24px;
@@ -163,7 +159,6 @@
     100% { top: 58%; left: 62%; }
   }
 
-  /* --- Окна --- */
   .win {
     position: absolute;
     background: var(--win-face);
@@ -213,7 +208,6 @@
     line-height: 1.35;
   }
 
-  /* Кнопка */
   .ok-btn {
     display: inline-block;
     padding: 8px 18px;
@@ -239,7 +233,6 @@
     transform: translate(2px, 2px);
   }
 
-  /* Иконки рабочего стола */
   .desktop-icons {
     position: absolute;
     top: 22px;
@@ -267,7 +260,6 @@
     image-rendering: pixelated;
   }
 
-  /* Позиции окон */
   .win-ok      { top: 40%; left: 12%; width: 260px; }
   .win-night   { top: 40%; left: 40%; width: 340px; animation: winShake 4s infinite; }
   .win-dream   { top: 62%; left: 22%; width: 260px; }
@@ -306,7 +298,6 @@
     gap: 12px;
   }
 
-  /* Прогресс загрузки */
   .boot .loading {
     position: absolute;
     left: 50%;
@@ -548,7 +539,6 @@
     line-height: 1.55;
   }
 
-  /* Пиксельный скроллбар */
   .data::-webkit-scrollbar { width: 14px; background: transparent; }
   .data::-webkit-scrollbar-track {
     background:
@@ -655,7 +645,6 @@
     100% { opacity: 0; transform: translateX(0); }
   }
 
-  /* Скрытие досье до перехода */
   .dossier-wrap { display: none; }
   .dossier-wrap.visible { display: block; }
 
@@ -697,7 +686,6 @@
   <span class="sparkle s4"></span>
   <span class="sparkle s5"></span>
 
-  <!-- Иконки рабочего стола -->
   <div class="desktop-icons">
     <div class="desktop-icon">
       <svg viewBox="0 0 38 32" shape-rendering="crispEdges">
@@ -715,7 +703,6 @@
     </div>
   </div>
 
-  <!-- Окно с кнопкой -->
   <div class="win win-ok">
     <div class="titlebar">
       <span class="name">terminal</span>
@@ -726,7 +713,6 @@
     </div>
   </div>
 
-  <!-- Окно Только для СБ -->
   <div class="win win-night">
     <div class="titlebar">
       <span class="name">message.txt</span>
@@ -737,7 +723,6 @@
     </div>
   </div>
 
-  <!-- Окно spam.exe -->
   <div class="win win-dream">
     <div class="titlebar">
       <span class="name">spam.exe</span>
@@ -755,7 +740,6 @@
     </div>
   </div>
 
-  <!-- Окно с файлами -->
   <div class="win win-notes">
     <div class="titlebar">
       <span class="name">documents</span>
@@ -779,7 +763,6 @@
     </div>
   </div>
 
-  <!-- Курсор -->
   <div class="cursor-arrow">
     <svg viewBox="0 0 20 24" shape-rendering="crispEdges">
       <path d="M2 1 L2 19 L7 15 L10 22 L13 21 L10 14 L16 14 Z"
@@ -854,10 +837,11 @@
 
           <div class="section">
             <h2>Служебная история</h2>
-            <div class="row"><span class="k">Цикл 3021-04:</span><span class="v">Прибытие на объект</span></div>
-            <div class="row"><span class="k">Цикл 3021-11:</span><span class="v">Назначение мед. корпус, сектор B</span></div>
-            <div class="row"><span class="k">Цикл 3022-02:</span><span class="v">Плановое обслуживание ядра</span></div>
-            <div class="row"><span class="k">Цикл 3022-02:</span><span class="v">Возвращена в строй. Отклонений не выявлено.</span></div>
+            <div class="row"><span class="k">Цикл 13.07.2157:</span><span class="v">Отобрана для отправления на ERES — 427</span></div>
+            <div class="row"><span class="k">Цикл 15.07.2157:</span><span class="v">Прибытие на комплекс ERES — 427, назначение в Медицинский отдел</span></div>
+            <div class="row"><span class="k">Цикл 08.08.2157:</span><span class="v">Повышение в Медицинском отделе до 04</span></div>
+            <div class="row"><span class="k">Цикл 13.09.2157:</span><span class="v">Повышение в Медицинском отделе до 03</span></div>
+            <div class="row"><span class="k">Цикл 05.10.2157:</span><span class="v">Назначение на должность Старосты Штрафных Элементов</span></div>
           </div>
 
           <div class="section">
@@ -883,7 +867,6 @@
 </div>
 
 <script>
-  /* ===== Прогресс boot ===== */
   const bootBar = document.getElementById('bootBar');
   let bootProgress = 0;
   const bootInterval = setInterval(() => {
@@ -892,7 +875,6 @@
     if (bootProgress >= 100) clearInterval(bootInterval);
   }, 220);
 
-  /* ===== Переход на досье ===== */
   function openDossier() {
     const boot = document.getElementById('boot');
     const dossier = document.getElementById('dossier');
@@ -903,7 +885,6 @@
     }, 800);
   }
 
-  /* ===== Часы в досье ===== */
   function tick() {
     const el = document.getElementById('clock');
     if (!el) return;
@@ -913,7 +894,6 @@
   }
   setInterval(tick, 1000); tick();
 
-  /* ===== Глитчи в досье ===== */
   const glitch = document.getElementById('glitch');
   function scheduleGlitch() {
     const delay = 4000 + Math.random() * 9000;
@@ -925,7 +905,6 @@
   }
   scheduleGlitch();
 
-  /* ===== Клавиши ===== */
   document.addEventListener('keydown', (e) => {
     if (e.key === 'F5') { e.preventDefault(); location.reload(); }
     if (e.key === 'Escape') {
@@ -938,7 +917,6 @@
     }
   });
 
-  /* ===== Микро-дрожание данных ===== */
   const data = document.getElementById('data');
   setInterval(() => {
     if (Math.random() > 0.9) {
