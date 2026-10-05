@@ -25,6 +25,12 @@
     overflow: hidden;
   }
 
+  /* ===== Пиксельный скроллбар (Firefox) ===== */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--peach-dim) #0d0805;
+  }
+
   /* ===== CRT-обёртка ===== */
   .crt {
     position: relative;
@@ -172,7 +178,6 @@
     border: 1px solid rgba(232,168,124,.25);
   }
 
-  /* Мерцающий шум поверх фото */
   .portrait::before {
     content: "";
     position: absolute;
@@ -185,7 +190,6 @@
     animation: ghost 4s infinite;
   }
 
-  /* Скан-линии поверх фото */
   .portrait::after {
     content: "";
     position: absolute;
@@ -232,15 +236,101 @@
   /* ===== Данные ===== */
   .data {
     overflow-y: auto;
-    padding-right: 10px;
+    padding-right: 14px;
     font-size: 15px;
     line-height: 1.55;
   }
 
-  .data::-webkit-scrollbar { width: 6px; }
-  .data::-webkit-scrollbar-thumb { background: var(--peach-dim); }
-  .data::-webkit-scrollbar-track { background: transparent; }
+  /* ===== ПИКСЕЛЬНЫЙ СКРОЛЛБАР (WebKit) ===== */
+  .data::-webkit-scrollbar {
+    width: 14px;
+    background: transparent;
+  }
 
+  /* Дорожка — «утопленная» рамка с сеткой пикселей */
+  .data::-webkit-scrollbar-track {
+    background:
+      repeating-linear-gradient(
+        0deg,
+        #0d0805 0px,
+        #0d0805 2px,
+        #150e08 2px,
+        #150e08 4px
+      );
+    border: 1px solid var(--peach-dim);
+    box-shadow: inset 0 0 0 1px #000;
+  }
+
+  /* Бегунок — квадратный, со «ступеньками» */
+  .data::-webkit-scrollbar-thumb {
+    background: var(--peach-dim);
+    border: 1px solid var(--peach);
+    box-shadow:
+      inset -2px -2px 0 0 #5a3f2a,
+      inset  2px  2px 0 0 var(--peach-soft);
+    image-rendering: pixelated;
+  }
+
+  .data::-webkit-scrollbar-thumb:hover {
+    background: var(--peach);
+    border-color: var(--peach-soft);
+    box-shadow:
+      inset -2px -2px 0 0 #7a5638,
+      inset  2px  2px 0 0 #f8d9bf;
+  }
+
+  .data::-webkit-scrollbar-thumb:active {
+    background: var(--peach-soft);
+    border-color: #fff2e2;
+    box-shadow:
+      inset  2px  2px 0 0 #7a5638,
+      inset -2px -2px 0 0 #f8d9bf;
+  }
+
+  /* Уголок между полосами — тоже квадратный */
+  .data::-webkit-scrollbar-corner {
+    background: #0d0805;
+    border: 1px solid var(--peach-dim);
+  }
+
+  /* Кнопки-стрелки сверху/снизу — в стиле пиксельных */
+  .data::-webkit-scrollbar-button:single-button {
+    background: var(--peach-dim);
+    border: 1px solid var(--peach);
+    box-shadow:
+      inset -2px -2px 0 0 #5a3f2a,
+      inset  2px  2px 0 0 var(--peach-soft);
+    height: 14px;
+    width: 14px;
+    display: block;
+  }
+
+  .data::-webkit-scrollbar-button:single-button:hover {
+    background: var(--peach);
+    border-color: var(--peach-soft);
+  }
+
+  .data::-webkit-scrollbar-button:single-button:vertical:decrement {
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--peach-soft) 50%),
+      linear-gradient(135deg, var(--peach-soft) 50%, transparent 50%),
+      linear-gradient(180deg, var(--peach) 0%, var(--peach-dim) 100%);
+    background-size: 6px 6px, 6px 6px, 100% 100%;
+    background-position: center 65%, center 65%, 0 0;
+    background-repeat: no-repeat;
+  }
+
+  .data::-webkit-scrollbar-button:single-button:vertical:increment {
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--peach-soft) 50%),
+      linear-gradient(135deg, var(--peach-soft) 50%, transparent 50%),
+      linear-gradient(0deg, var(--peach) 0%, var(--peach-dim) 100%);
+    background-size: 6px 6px, 6px 6px, 100% 100%;
+    background-position: center 35%, center 35%, 0 0;
+    background-repeat: no-repeat;
+  }
+
+  /* ===== Секции досье ===== */
   .section { margin-bottom: 18px; }
 
   .section h2 {
@@ -335,7 +425,7 @@
       aspect-ratio: auto;
       max-height: none;
     }
-    .data { overflow: visible; }
+    .data { overflow: visible; padding-right: 0; }
     .title { font-size: 20px; letter-spacing: 3px; }
     .row { grid-template-columns: 130px 1fr; font-size: 14px; }
   }
