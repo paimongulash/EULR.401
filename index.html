@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EULR // DOSSIER // AEON-OS</title>
+<style>
+  :root {
+    --peach: #e8a87c;
+    --peach-dim: #8a6244;
+    --peach-soft: #f2c4a0;
+    --bg: #0a0705;
+    --panel: #17100b;
+    --scan: rgba(232, 168, 124, 0.06);
+    --glow: 0 0 4px rgba(232,168,124,.5), 0 0 14px rgba(232,168,124,.22);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: #000;
+    color: var(--peach);
+    font-family: "Courier New", "VT323", monospace;
+    overflow: hidden;
+  }
+
+  /* ===== CRT-обёртка ===== */
+  .crt {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(ellipse at center, #1c130c 0%, #000 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Скан-линии всего экрана */
+  .crt::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      var(--scan) 0px,
+      var(--scan) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: 10;
+    animation: flicker 4s infinite;
+  }
+
+  /* Виньетка */
+  .crt::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.75) 100%);
+    pointer-events: none;
+    z-index: 11;
+  }
+
+  @keyframes flicker {
+    0%, 100% { opacity: .85; }
+    47% { opacity: .95; }
+    48% { opacity: .4; }
+    49% { opacity: .95; }
+    92% { opacity: .75; }
+  }
+
+  /* ===== Основная панель ===== */
+  .screen {
+    position: relative;
+    width: min(1100px, 94vw);
+    height: min(760px, 92vh);
+    background: var(--panel);
+    border: 1px solid var(--peach-dim);
+    padding: 22px 26px;
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+      0 0 0 2px #000 inset,
+      0 0 30px rgba(232,168,124,.13),
+      0 0 80px rgba(232,168,124,.07);
+    text-shadow: var(--glow);
+    animation: boot 1.2s ease-out;
+  }
+
+  @keyframes boot {
+    0% { opacity: 0; transform: scaleY(0.02); filter: brightness(3); }
+    40% { opacity: 1; transform: scaleY(0.02); }
+    60% { transform: scaleY(1.02); }
+    100% { transform: scaleY(1); filter: brightness(1); }
+  }
+
+  /* ===== Верхняя строка ===== */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--peach-dim);
+    border-bottom: 1px dashed var(--peach-dim);
+    padding-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .topbar .blink { animation: blink 1.1s steps(2) infinite; }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ===== Заголовок ===== */
+  .title {
+    margin-top: 16px;
+    font-size: 30px;
+    letter-spacing: 6px;
+    border-bottom: 2px solid var(--peach);
+    padding-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .title .id {
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--peach-dim);
+  }
+
+  /* ===== Сетка содержимого ===== */
+  .grid {
+    margin-top: 18px;
+    flex: 1;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 22px;
+    overflow: hidden;
+  }
+
+  /* ===== Портрет ===== */
+  .portrait {
+    border: 1px solid var(--peach-dim);
+    background: #100a06;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    filter: sepia(0.25) hue-rotate(-8deg) saturate(0.85) brightness(0.92);
+    mix-blend-mode: screen;
+    opacity: 0.92;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Мерцающий шум поверх фото */
+  .portrait::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(232,168,124,.08), transparent 40%),
+      radial-gradient(circle at 70% 80%, rgba(232,168,124,.05), transparent 50%);
+    pointer-events: none;
+    z-index: 2;
+    animation: ghost 4s infinite;
+  }
+
+  /* Скан-линии поверх фото */
+  .portrait::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(232,168,124,.1) 0 1px,
+      transparent 1px 3px
+    );
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  @keyframes ghost {
+    0%, 100% { opacity: .5; }
+    50% { opacity: 1; }
+  }
+
+  .portrait .label {
+    position: absolute;
+    bottom: 6px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--peach-dim);
+    background: rgba(10,7,5,.7);
+    padding: 3px 0;
+    z-index: 4;
+  }
+
+  .portrait .corner {
+    position: absolute;
+    width: 12px; height: 12px;
+    border-color: var(--peach);
+    z-index: 4;
+  }
+  .corner.tl { top: 6px; left: 6px; border-top: 1px solid; border-left: 1px solid; }
+  .corner.tr { top: 6px; right: 6px; border-top: 1px solid; border-right: 1px solid; }
+  .corner.bl { bottom: 6px; left: 6px; border-bottom: 1px solid; border-left: 1px solid; }
+  .corner.br { bottom: 6px; right: 6px; border-bottom: 1px solid; border-right: 1px solid; }
+
+  /* ===== Данные ===== */
+  .data {
+    overflow-y: auto;
+    padding-right: 10px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .data::-webkit-scrollbar { width: 6px; }
+  .data::-webkit-scrollbar-thumb { background: var(--peach-dim); }
+  .data::-webkit-scrollbar-track { background: transparent; }
+
+  .section { margin-bottom: 18px; }
+
+  .section h2 {
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--peach);
+    border-bottom: 1px dotted var(--peach-dim);
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 10px;
+    padding: 2px 0;
+  }
+
+  .row .k { color: var(--peach-dim); }
+  .row .v { color: var(--peach); }
+
+  .v.warn { color: #d67a5c; text-shadow: 0 0 6px rgba(214,122,92,.55); }
+  .v.ok   { color: #b8c98a; text-shadow: 0 0 6px rgba(184,201,138,.5); }
+
+  /* Полоса состояния */
+  .bar {
+    display: inline-block;
+    width: 140px;
+    height: 10px;
+    border: 1px solid var(--peach-dim);
+    position: relative;
+    vertical-align: middle;
+  }
+  .bar::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    width: var(--w, 50%);
+    background: var(--peach);
+    box-shadow: 0 0 6px rgba(232,168,124,.6);
+  }
+
+  /* ===== Нижняя панель ===== */
+  .footer {
+    margin-top: 14px;
+    border-top: 1px dashed var(--peach-dim);
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--peach-dim);
+    letter-spacing: 1px;
+  }
+
+  .footer .keys span {
+    color: var(--peach);
+    border: 1px solid var(--peach-dim);
+    padding: 1px 6px;
+    margin-right: 4px;
+  }
+
+  /* ===== Глитч-оверлей ===== */
+  .glitch {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: var(--peach-soft);
+    mix-blend-mode: overlay;
+    opacity: 0;
+    z-index: 9;
+  }
+
+  .glitch.active { animation: glitch 0.18s steps(3) 1; }
+
+  @keyframes glitch {
+    0%   { opacity: .22; transform: translateX(-3px); }
+    50%  { opacity: .08; transform: translateX(4px); }
+    100% { opacity: 0; transform: translateX(0); }
+  }
+
+  /* ===== Адаптив ===== */
+  @media (max-width: 720px) {
+    .grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: 220px 1fr;
+      overflow-y: auto;
+    }
+    .portrait { height: 220px; }
+    .data { overflow: visible; }
+    .title { font-size: 20px; letter-spacing: 3px; }
+    .row { grid-template-columns: 130px 1fr; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+  <div class="crt">
+    <div class="glitch" id="glitch"></div>
+
+    <div class="screen">
+      <div class="topbar">
+        <span>AEON-OS v2.7 // EINHEIT-DATENBANK</span>
+        <span>ПОЛЬЗОВАТЕЛЬ: <span class="blink">█</span></span>
+      </div>
+
+      <div class="title">
+        <span>ДОСЬЕ // EULR</span>
+        <span class="id">ID: EULR.03.401</span>
+      </div>
+
+      <div class="grid">
+        <!-- Портрет с изображением -->
+        <div class="portrait">
+          <span class="corner tl"></span>
+          <span class="corner tr"></span>
+          <span class="corner bl"></span>
+          <span class="corner br"></span>
+          <img src="eulr.png" alt="EULR-03.401">
+          <div class="label">EULR.03.401 // ОПОЗНАНО</div>
+        </div>
+
+        <!-- Данные -->
+        <div class="data" id="data">
+
+          <div class="section">
+            <h2>Базовые параметры</h2>
+            <div class="row"><span class="k">Класс:</span><span class="v">Replika — EULR</span></div>
+            <div class="row"><span class="k">Серия:</span><span class="v">Eule // "Сова"</span></div>
+            <div class="row"><span class="k">Назначение:</span><span class="v">Медицинский отдел</span></div>
+            <div class="row"><span class="k">Статус:</span><span class="v ok">АКТИВЕН</span></div>
+            <div class="row"><span class="k">Приписка:</span><span class="v">ERES — 427 Медицинский отдел</span></div>
+          </div>
+
+          <div class="section">
+            <h2>Внешние характеристики</h2>
+            <div class="row"><span class="k">Рост:</span><span class="v">165 см</span></div>
+            <div class="row"><span class="k">Волосы:</span><span class="v">Короткие</span></div>
+            <div class="row"><span class="k">Особые метки:</span><span class="v">Заколка из красного металла в форме ветки гладиолуса</span></div>
+          </div>
+
+          <div class="section">
+            <h2>Психопрофиль</h2>
+            <div class="row"><span class="k">Стабильность:</span>
+              <span class="v"><span class="bar" style="--w:100%"></span> 100%</span>
+            </div>
+            <div class="row"><span class="k">Память:</span>
+              <span class="v"><span class="bar" style="--w:100%"></span> 100%</span>
+            </div>
+            <div class="row"><span class="k">Отклонения:</span><span class="v ok">НЕ ОБНАРУЖЕНЫ</span></div>
+            <div class="row"><span class="k">Примечания:</span>
+              <span class="v">—</span>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>Служебная история</h2>
+            <div class="row"><span class="k">Цикл 3021-04:</span><span class="v">Прибытие на объект</span></div>
+            <div class="row"><span class="k">Цикл 3021-11:</span><span class="v">Назначение мед. корпус, сектор B</span></div>
+            <div class="row"><span class="k">Цикл 3022-02:</span><span class="v">Плановое обслуживание ядра</span></div>
+            <div class="row"><span class="k">Цикл 3022-02:</span><span class="v">Возвращена в строй. Отклонений не выявлено.</span></div>
+          </div>
+
+          <div class="section">
+            <h2>Примечание наблюдателя</h2>
+            <div class="row"><span class="v">
+              "Образцовая единица. Рекомендована к продлению срока службы."
+              <br>— LSTR
+            </span></div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="keys">
+          <span>F1</span> СПРАВКА
+          <span>F5</span> ОБНОВИТЬ
+          <span>ESC</span> ВЫХОД
+        </div>
+        <div id="clock">--:--:--</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  /* Часы */
+  function tick() {
+    const d = new Date();
+    const p = n => String(n).padStart(2, '0');
+    document.getElementById('clock').textContent =
+      `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+  }
+  setInterval(tick, 1000);
+  tick();
+
+  /* Случайные глитчи */
+  const glitch = document.getElementById('glitch');
+  function scheduleGlitch() {
+    const delay = 4000 + Math.random() * 9000;
+    setTimeout(() => {
+      glitch.classList.add('active');
+      setTimeout(() => glitch.classList.remove('active'), 200);
+      scheduleGlitch();
+    }, delay);
+  }
+  scheduleGlitch();
+
+  /* Клавиши */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'F5') {
+      e.preventDefault();
+      location.reload();
+    }
+    if (e.key === 'Escape') {
+      document.body.style.transition = 'opacity .4s';
+      document.body.style.opacity = '0';
+      setTimeout(() => {
+        document.body.innerHTML =
+          '<div style="color:#e8a87c;font-family:monospace;background:#000;height:100vh;display:flex;align-items:center;justify-content:center;letter-spacing:4px">СВЯЗЬ ПРЕРВАНА<span style="animation:blink 1s steps(2) infinite">_</span></div>';
+      }, 400);
+    }
+  });
+
+  /* Лёгкое "дрожание" данных */
+  const data = document.getElementById('data');
+  setInterval(() => {
+    if (Math.random() > 0.9) {
+      data.style.transform = `translate(${Math.random()*1-0.5}px, ${Math.random()*1-0.5}px)`;
+      setTimeout(() => data.style.transform = 'translate(0,0)', 60);
+    }
+  }, 500);
+</script>
+</body>
+</html>
