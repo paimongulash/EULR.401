@@ -1951,20 +1951,15 @@
       var ARCHIVE_PASSWORD = '2157';
 
       // Список фото: имя файла + подпись.
-      var ALBUM = [
-        { src: "fkler.png",       caption: "ФОТО 01 // ПЕРВЫЙ КАДР" },
-        { src: "eule_poster.png", caption: "ФОТО 02 // ПОСТЕР" },
-        { src: "eulr.png",        caption: "ФОТО 03 // СОВА" }
+            var ALBUM = [
+        { src: "1.png", caption: "ФОТО 01" },
+        { src: "2.png", caption: "ФОТО 02" },
+        { src: "3.png", caption: "ФОТО 03" },
+        { src: "4.png", caption: "ФОТО 04" },
+        { src: "5.png", caption: "ФОТО 05" },
+        { src: "6.png", caption: "ФОТО 06" },
+        { src: "7.png", caption: "ФОТО 07" }
       ];
-
-      var albumIdx = 0;
-      var albumImg = document.getElementById('albumImg');
-      var albumCaption = document.getElementById('albumCaption');
-      var albumCounter = document.getElementById('albumCounter');
-      var albumDots = document.getElementById('albumDots');
-      var albumPrev = document.getElementById('albumPrev');
-      var albumNext = document.getElementById('albumNext');
-
       function renderAlbum() {
         if (!ALBUM.length || !albumImg) return;
         var item = ALBUM[albumIdx];
