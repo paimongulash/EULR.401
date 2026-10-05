@@ -1949,6 +1949,89 @@
 
       /* Архив */
       var ARCHIVE_PASSWORD = '2157';
+            /* ===== Архив — альбом фотографий ===== */
+      var ARCHIVE_PASSWORD = '2157';
+
+      // Список фото: имя файла + подпись.
+      // Замени src на свои картинки и caption на подписи.
+      var ALBUM = [
+        { src: "fkler.png",       caption: "ФОТО 01 // ПЕРВЫЙ КАДР" },
+        { src: "eule_poster.png", caption: "ФОТО 02 // ПОСТЕР" },
+        { src: "eulr.png",        caption: "ФОТО 03 // СОВА" }
+      ];
+
+      var albumIdx = 0;
+      var albumImg = document.getElementById('albumImg');
+      var albumCaption = document.getElementById('albumCaption');
+      var albumCounter = document.getElementById('albumCounter');
+      var albumDots = document.getElementById('albumDots');
+      var albumPrev = document.getElementById('albumPrev');
+      var albumNext = document.getElementById('albumNext');
+
+      function renderAlbum() {
+        if (!ALBUM.length || !albumImg) return;
+        var item = ALBUM[albumIdx];
+        albumImg.src = item.src;
+        albumImg.alt = item.caption || 'Архивное фото';
+        if (albumCaption) albumCaption.textContent = item.caption || '';
+        if (albumCounter) {
+          albumCounter.textContent =
+            String(albumIdx + 1).padStart(2, '0') + ' / ' +
+            String(ALBUM.length).padStart(2, '0');
+        }
+        if (albumDots) {
+          var dots = albumDots.querySelectorAll('.album-dot');
+          dots.forEach(function (d, i) {
+            d.classList.toggle('active', i === albumIdx);
+          });
+        }
+        if (albumPrev) albumPrev.disabled = albumIdx === 0;
+        if (albumNext) albumNext.disabled = albumIdx === ALBUM.length - 1;
+      }
+
+      function buildAlbumDots() {
+        if (!albumDots) return;
+        albumDots.innerHTML = '';
+        ALBUM.forEach(function (_, i) {
+          var dot = document.createElement('button');
+          dot.className = 'album-dot';
+          dot.setAttribute('aria-label', 'Фото ' + (i + 1));
+          dot.addEventListener('click', function () {
+            albumIdx = i;
+            renderAlbum();
+          });
+          albumDots.appendChild(dot);
+        });
+      }
+
+      function albumPrevFn() {
+        if (albumIdx > 0) {
+          albumIdx--;
+          renderAlbum();
+        }
+      }
+      function albumNextFn() {
+        if (albumIdx < ALBUM.length - 1) {
+          albumIdx++;
+          renderAlbum();
+        }
+      }
+
+      if (albumPrev) albumPrev.addEventListener('click', albumPrevFn);
+      if (albumNext) albumNext.addEventListener('click', albumNextFn);
+
+      // Листание стрелками клавиатуры при открытом альбоме
+      document.addEventListener('keydown', function (e) {
+        var archiveTab = document.getElementById('tab-archive');
+        if (!archiveTab || !archiveTab.classList.contains('active')) return;
+        if (e.key === 'ArrowLeft')  { e.preventDefault(); albumPrevFn(); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); albumNextFn(); }
+      });
+
+      buildAlbumDots();
+      renderAlbum();
+
+      /* ===== Разблокировка архива ===== */
       var archiveInput = document.getElementById('archivePassword');
       var archiveBtn = document.getElementById('archiveSubmit');
       var archiveError = document.getElementById('archiveError');
@@ -1982,7 +2065,6 @@
           if (e.key === 'Enter') { e.preventDefault(); tryUnlockArchive(); }
         });
       }
-    });
 
     function tick() {
       var el = document.getElementById('clock');
