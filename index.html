@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EULR // DOSSIER // AEON-OS</title>
+<title>AEON-OS // TERMINAL</title>
 <style>
   :root {
     --peach: #e8a87c;
@@ -15,14 +15,10 @@
     --scan: rgba(232, 168, 124, 0.06);
     --glow: 0 0 4px rgba(232,168,124,.5), 0 0 14px rgba(232,168,124,.22);
 
-    /* Отдельные тона для boot-экрана */
-    --desk-1: #1a0f08;
-    --desk-2: #2a1810;
+    /* Boot-экран */
     --win-face: #d9b291;
-    --win-face-2: #c99b74;
     --win-border: #4a2f1c;
     --win-title: #7a4a2a;
-    --win-title-2: #5a3520;
     --win-text: #2a1810;
   }
 
@@ -53,13 +49,12 @@
     pointer-events: none;
   }
 
-  /* --- Звёздное небо (генерируется через ::before как сетка точек) --- */
+  /* Звёздное небо */
   .boot::before {
     content: "";
     position: absolute;
     inset: 0;
     background-image:
-      /* крупные звёзды */
       radial-gradient(2px 2px at 12% 18%, var(--peach-soft), transparent 60%),
       radial-gradient(2px 2px at 28% 72%, var(--peach-soft), transparent 60%),
       radial-gradient(2px 2px at 45% 32%, #ffffff, transparent 60%),
@@ -68,7 +63,6 @@
       radial-gradient(2px 2px at 91% 22%, var(--peach-soft), transparent 60%),
       radial-gradient(2px 2px at 8% 88%, #ffffff, transparent 60%),
       radial-gradient(2px 2px at 55% 90%, var(--peach-soft), transparent 60%),
-      /* мелкие звёзды */
       radial-gradient(1px 1px at 5% 40%, var(--peach-dim), transparent 60%),
       radial-gradient(1px 1px at 18% 55%, var(--peach-dim), transparent 60%),
       radial-gradient(1px 1px at 33% 12%, var(--peach-dim), transparent 60%),
@@ -94,7 +88,7 @@
     100% { opacity: 1; }
   }
 
-  /* --- Мерцающие крестики-звёзды --- */
+  /* Мерцающие крестики */
   .boot .sparkle {
     position: absolute;
     width: 14px; height: 14px;
@@ -115,7 +109,6 @@
     top: 50%; left: 0; height: 2px; width: 100%;
     transform: translateY(-50%);
   }
-
   .boot .sparkle.s1 { top: 15%; left: 8%; animation: sparklePulse 2s infinite; }
   .boot .sparkle.s2 { top: 60%; left: 22%; animation: sparklePulse 2s .4s infinite; }
   .boot .sparkle.s3 { top: 25%; left: 78%; animation: sparklePulse 2s .8s infinite; }
@@ -127,7 +120,6 @@
     50% { opacity: 1; transform: scale(1.1); }
   }
 
-  /* --- Пиксельная сетка поверх неба --- */
   .boot .grid-overlay {
     position: absolute;
     inset: 0;
@@ -138,7 +130,6 @@
     pointer-events: none;
   }
 
-  /* --- Горизонт: «горы» и столбы внизу --- */
   .boot .horizon {
     position: absolute;
     left: 0; right: 0; bottom: 0;
@@ -151,18 +142,16 @@
     pointer-events: none;
   }
 
-  /* --- Курсор-стрелка --- */
+  /* Курсор-стрелка */
   .boot .cursor-arrow {
     position: absolute;
     width: 20px; height: 24px;
-    top: 60%;
-    left: 65%;
+    top: 60%; left: 65%;
     pointer-events: none;
     filter: drop-shadow(2px 2px 0 rgba(0,0,0,.5));
-    animation: cursorMove 6s steps(20) infinite;
+    animation: cursorMove 8s steps(20) infinite;
     z-index: 20;
   }
-
   .boot .cursor-arrow svg { width: 100%; height: 100%; display: block; }
 
   @keyframes cursorMove {
@@ -199,13 +188,8 @@
     text-shadow: 1px 1px 0 rgba(0,0,0,.5);
     border-bottom: 2px solid var(--win-border);
   }
-
   .win .titlebar .name { font-weight: bold; }
-
-  .win .titlebar .btns {
-    display: flex;
-    gap: 3px;
-  }
+  .win .titlebar .btns { display: flex; gap: 3px; }
   .win .titlebar .btns span {
     display: block;
     width: 14px; height: 14px;
@@ -229,10 +213,10 @@
     line-height: 1.35;
   }
 
-  /* --- Кнопка OK --- */
+  /* Кнопка OK / OPEN DOSSIER */
   .ok-btn {
     display: inline-block;
-    padding: 8px 22px;
+    padding: 8px 18px;
     background: var(--win-face);
     border: 2px solid var(--win-border);
     box-shadow:
@@ -241,13 +225,12 @@
       3px 3px 0 0 rgba(0,0,0,.45);
     color: var(--win-text);
     font-family: inherit;
-    font-size: 16px;
+    font-size: 14px;
     letter-spacing: 2px;
     cursor: pointer;
     image-rendering: pixelated;
     transition: none;
   }
-
   .ok-btn:active {
     box-shadow:
       inset -2px -2px 0 0 #fff,
@@ -256,7 +239,7 @@
     transform: translate(2px, 2px);
   }
 
-  /* --- Папки на рабочем столе --- */
+  /* Иконки рабочего стола */
   .desktop-icons {
     position: absolute;
     top: 22px;
@@ -266,32 +249,29 @@
     gap: 26px;
     z-index: 5;
   }
-
   .desktop-icon {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
-    width: 64px;
+    width: 96px;
     color: var(--peach-soft);
     font-size: 10px;
     letter-spacing: 1px;
     text-align: center;
     text-shadow: 1px 1px 0 rgba(0,0,0,.7);
   }
-
   .desktop-icon svg {
-    width: 38px;
-    height: 32px;
+    width: 38px; height: 32px;
     filter: drop-shadow(2px 2px 0 rgba(0,0,0,.55));
     image-rendering: pixelated;
   }
 
-  /* --- Позиции окон --- */
-  .win-ok      { top: 40%; left: 15%; width: 240px; }
-  .win-night   { top: 42%; left: 40%; width: 340px; animation: winShake 4s infinite; }
-  .win-dream   { top: 62%; left: 26%; width: 220px; }
-  .win-notes   { top: 60%; left: 55%; width: 300px; }
+  /* Позиции окон */
+  .win-ok      { top: 40%; left: 12%; width: 260px; }
+  .win-night   { top: 40%; left: 40%; width: 340px; animation: winShake 4s infinite; }
+  .win-dream   { top: 62%; left: 22%; width: 260px; }
+  .win-notes   { top: 58%; left: 55%; width: 320px; }
 
   .win-notes .body {
     display: flex;
@@ -300,7 +280,6 @@
     gap: 10px;
     padding: 14px 10px;
   }
-
   .note {
     display: flex;
     flex-direction: column;
@@ -308,6 +287,8 @@
     gap: 4px;
     font-size: 10px;
     color: var(--win-text);
+    text-align: center;
+    width: 90px;
   }
   .note svg {
     width: 42px; height: 38px;
@@ -319,14 +300,13 @@
     50% { transform: translate(-1px, 1px); }
   }
 
-  /* --- Часы в часах символа --- */
   .dream-body {
     display: flex;
     align-items: center;
     gap: 12px;
   }
 
-  /* --- Прогресс загрузки внизу --- */
+  /* Прогресс загрузки */
   .boot .loading {
     position: absolute;
     left: 50%;
@@ -340,7 +320,6 @@
     z-index: 15;
     text-shadow: var(--glow);
   }
-
   .boot .loading .bar {
     width: 100%;
     height: 14px;
@@ -351,7 +330,6 @@
     position: relative;
     overflow: hidden;
   }
-
   .boot .loading .bar::after {
     content: "";
     position: absolute;
@@ -365,7 +343,6 @@
     transition: width .25s linear;
   }
 
-  /* --- Скан-линии CRT поверх boot-экрана --- */
   .boot .crt-lines {
     position: absolute;
     inset: 0;
@@ -379,7 +356,7 @@
     animation: flicker 4s infinite;
   }
 
-  /* ================= ОСНОВНОЙ САЙТ (без изменений) ================= */
+  /* ================= ДОСЬЕ ================= */
   .crt {
     position: relative;
     width: 100vw;
@@ -390,7 +367,6 @@
     justify-content: center;
     overflow: hidden;
   }
-
   .crt::before {
     content: "";
     position: absolute;
@@ -406,7 +382,6 @@
     z-index: 10;
     animation: flicker 4s infinite;
   }
-
   .crt::after {
     content: "";
     position: absolute;
@@ -440,7 +415,6 @@
     text-shadow: var(--glow);
     animation: bootScreen 1.2s ease-out;
   }
-
   @keyframes bootScreen {
     0% { opacity: 0; transform: scaleY(0.02); filter: brightness(3); }
     40% { opacity: 1; transform: scaleY(0.02); }
@@ -458,9 +432,7 @@
     padding-bottom: 8px;
     text-transform: uppercase;
   }
-
   .topbar .blink { animation: blink 1.1s steps(2) infinite; }
-
   @keyframes blink { 50% { opacity: 0; } }
 
   .title {
@@ -475,7 +447,6 @@
     gap: 10px;
     flex-wrap: wrap;
   }
-
   .title .id {
     font-size: 13px;
     letter-spacing: 2px;
@@ -504,7 +475,6 @@
     aspect-ratio: 3 / 4;
     max-height: 280px;
   }
-
   .portrait img {
     width: 100%;
     height: 100%;
@@ -520,7 +490,6 @@
     z-index: 1;
     border: 1px solid rgba(232,168,124,.25);
   }
-
   .portrait::before {
     content: "";
     position: absolute;
@@ -532,7 +501,6 @@
     z-index: 2;
     animation: ghost 4s infinite;
   }
-
   .portrait::after {
     content: "";
     position: absolute;
@@ -545,7 +513,6 @@
     pointer-events: none;
     z-index: 3;
   }
-
   @keyframes ghost {
     0%, 100% { opacity: .5; }
     50% { opacity: 1; }
@@ -554,8 +521,7 @@
   .portrait .label {
     position: absolute;
     bottom: 6px;
-    left: 0;
-    right: 0;
+    left: 0; right: 0;
     text-align: center;
     font-size: 9px;
     letter-spacing: 1px;
@@ -564,7 +530,6 @@
     padding: 3px 0;
     z-index: 4;
   }
-
   .portrait .corner {
     position: absolute;
     width: 12px; height: 12px;
@@ -584,18 +549,13 @@
   }
 
   /* Пиксельный скроллбар */
-  .data::-webkit-scrollbar {
-    width: 14px;
-    background: transparent;
-  }
+  .data::-webkit-scrollbar { width: 14px; background: transparent; }
   .data::-webkit-scrollbar-track {
     background:
       repeating-linear-gradient(
         0deg,
-        #0d0805 0px,
-        #0d0805 2px,
-        #150e08 2px,
-        #150e08 4px
+        #0d0805 0px, #0d0805 2px,
+        #150e08 2px, #150e08 4px
       );
     border: 1px solid var(--peach-dim);
     box-shadow: inset 0 0 0 1px #000;
@@ -695,6 +655,10 @@
     100% { opacity: 0; transform: translateX(0); }
   }
 
+  /* Скрываем досье пока boot активен */
+  .dossier-wrap { display: none; }
+  .dossier-wrap.visible { display: block; }
+
   @media (max-width: 720px) {
     .grid {
       grid-template-columns: 1fr;
@@ -712,7 +676,6 @@
     .title { font-size: 20px; letter-spacing: 3px; }
     .row { grid-template-columns: 130px 1fr; font-size: 14px; }
 
-    /* Boot-экран на мобиле — компактнее */
     .win-ok    { top: 22%; left: 8%;  width: 200px; }
     .win-night { top: 36%; left: 18%; width: 260px; }
     .win-dream { top: 55%; left: 12%; width: 200px; }
@@ -728,57 +691,56 @@
   <div class="grid-overlay"></div>
   <div class="horizon"></div>
 
-  <!-- Мерцающие крестики-звёзды -->
   <span class="sparkle s1"></span>
   <span class="sparkle s2"></span>
   <span class="sparkle s3"></span>
   <span class="sparkle s4"></span>
   <span class="sparkle s5"></span>
 
-  <!-- Иконки на «рабочем столе» -->
+  <!-- Иконки рабочего стола -->
   <div class="desktop-icons">
     <div class="desktop-icon">
       <svg viewBox="0 0 38 32" shape-rendering="crispEdges">
         <path d="M2 2h14l3 4h17v22H2z" fill="#f2c4a0" stroke="#4a2f1c" stroke-width="1.5"/>
         <path d="M2 8h34" stroke="#4a2f1c" stroke-width="1.5"/>
       </svg>
-      <span>Notes</span>
+      <span>Досье EULR.401</span>
     </div>
     <div class="desktop-icon">
       <svg viewBox="0 0 38 32" shape-rendering="crispEdges">
         <path d="M2 2h14l3 4h17v22H2z" fill="#e8a87c" stroke="#4a2f1c" stroke-width="1.5"/>
         <path d="M2 8h34" stroke="#4a2f1c" stroke-width="1.5"/>
       </svg>
-      <span>Notes 02</span>
+      <span>Нюдсы FKLR</span>
     </div>
   </div>
 
-  <!-- Окно OK -->
+  <!-- Окно с кнопкой -->
   <div class="win win-ok">
     <div class="titlebar">
-      <span class="name">dialogue</span>
+      <span class="name">terminal</span>
       <div class="btns"><span>_</span><span>□</span><span>×</span></div>
     </div>
-    <div class="body" style="text-align:center; padding: 20px 12px;">
-      <button class="ok-btn" onclick="skipBoot()">OK</button>
+    <div class="body" style="text-align:center; padding: 22px 12px;">
+      <button class="ok-btn" onclick="openDossier()">OPEN DOSSIER</button>
     </div>
   </div>
 
-  <!-- Окно GOOD NIGHT -->
+  <!-- Окно Только для СБ -->
   <div class="win win-night">
     <div class="titlebar">
       <span class="name">message.txt</span>
       <div class="btns"><span>_</span><span>□</span><span>×</span></div>
     </div>
     <div class="body" style="padding: 30px 12px; text-align:center;">
-      <span style="color:#7a4a2a; font-size:18px; letter-spacing:4px;">GOOD NIGHT :)</span>
+      <span style="color:#7a4a2a; font-size:18px; letter-spacing:4px;">ТОЛЬКО ДЛЯ СБ</span>
     </div>
   </div>
 
-  <!-- Окно HAVE A NICE DREAM -->
+  <!-- Окно spam.exe -->
   <div class="win win-dream">
     <div class="titlebar">
-      <span class="name">dream.exe</span>
+      <span class="name">spam.exe</span>
       <div class="btns"><span>_</span><span>□</span><span>×</span></div>
     </div>
     <div class="body dream-body">
@@ -788,12 +750,12 @@
         <path d="M8 10h3v3H8zM13 10h3v3h-3zM8 18h3v3H8zM13 18h3v3h-3z" fill="#5a3520"/>
       </svg>
       <span style="color:#5a3520; font-size:13px; letter-spacing:2px; line-height:1.3;">
-        HAVE A<br>NICE DREAM.
+        Горячие ADLR<br>в 200 метрах от вас.
       </span>
     </div>
   </div>
 
-  <!-- Окно Notes / Aesthetic / Idea -->
+  <!-- Окно с файлами -->
   <div class="win win-notes">
     <div class="titlebar">
       <span class="name">documents</span>
@@ -805,15 +767,185 @@
           <path d="M3 2h24l8 8v26H3z" fill="#f2c4a0" stroke="#4a2f1c" stroke-width="1.5"/>
           <path d="M27 2v8h8" fill="none" stroke="#4a2f1c" stroke-width="1.5"/>
         </svg>
-        <span>Notes</span>
+        <span>1984 как стиль жизни</span>
       </div>
       <div class="note">
         <svg viewBox="0 0 42 38" shape-rendering="crispEdges">
           <path d="M3 2h24l8 8v26H3z" fill="#b8c98a" stroke="#4a2f1c" stroke-width="1.5"/>
           <path d="M27 2v8h8" fill="none" stroke="#4a2f1c" stroke-width="1.5"/>
         </svg>
-        <span>Aesthetic</span>
+        <span>Отдых после работы</span>
       </div>
-      <div class="note">
-        <svg viewBox="0 0 42 38" shape-rendering="crispEdges">
-          <path d="M3 2h24l8 8v26H3z" fill="#e8a87c" stroke="#4a2f1c"
+    </div>
+  </div>
+
+  <!-- Курсор -->
+  <div class="cursor-arrow">
+    <svg viewBox="0 0 20 24" shape-rendering="crispEdges">
+      <path d="M2 1 L2 19 L7 15 L10 22 L13 21 L10 14 L16 14 Z"
+            fill="#f2c4a0" stroke="#2a1810" stroke-width="1.5"/>
+    </svg>
+  </div>
+
+  <div class="loading">
+    <span>ЗАГРУЗКА AEON-OS...</span>
+    <div class="bar" id="bootBar"></div>
+  </div>
+
+  <div class="crt-lines"></div>
+</div>
+
+<!-- ================= ДОСЬЕ ================= -->
+<div class="dossier-wrap" id="dossier">
+  <div class="crt">
+    <div class="glitch" id="glitch"></div>
+
+    <div class="screen">
+      <div class="topbar">
+        <span>AEON-OS v2.7 // EINHEIT-DATENBANK</span>
+        <span>ПОЛЬЗОВАТЕЛЬ: <span class="blink">█</span></span>
+      </div>
+
+      <div class="title">
+        <span>ДОСЬЕ // EULR</span>
+        <span class="id">ID: EULR.03.401</span>
+      </div>
+
+      <div class="grid">
+        <div class="portrait">
+          <span class="corner tl"></span>
+          <span class="corner tr"></span>
+          <span class="corner bl"></span>
+          <span class="corner br"></span>
+          <img src="eulr.png" alt="EULR-03.401">
+          <div class="label">EULR.03.401 // ОПОЗНАНО</div>
+        </div>
+
+        <div class="data" id="data">
+          <div class="section">
+            <h2>Базовые параметры</h2>
+            <div class="row"><span class="k">Класс:</span><span class="v">Replika — EULR</span></div>
+            <div class="row"><span class="k">Серия:</span><span class="v">Eule // "Сова"</span></div>
+            <div class="row"><span class="k">Назначение:</span><span class="v">Медицинский отдел</span></div>
+            <div class="row"><span class="k">Статус:</span><span class="v ok">АКТИВЕН</span></div>
+            <div class="row"><span class="k">Приписка:</span><span class="v">ERES — 427 Медицинский отдел</span></div>
+          </div>
+
+          <div class="section">
+            <h2>Внешние характеристики</h2>
+            <div class="row"><span class="k">Рост:</span><span class="v">165 см</span></div>
+            <div class="row"><span class="k">Волосы:</span><span class="v">Короткие</span></div>
+            <div class="row"><span class="k">Особые метки:</span><span class="v">Заколка из красного металла в форме ветки гладиолуса</span></div>
+          </div>
+
+          <div class="section">
+            <h2>Психопрофиль</h2>
+            <div class="row"><span class="k">Стабильность:</span>
+              <span class="v"><span class="bar" style="--w:100%"></span> 100%</span>
+            </div>
+            <div class="row"><span class="k">Память:</span>
+              <span class="v"><span class="bar" style="--w:100%"></span> 100%</span>
+            </div>
+            <div class="row"><span class="k">Отклонения:</span><span class="v ok">НЕ ОБНАРУЖЕНЫ</span></div>
+            <div class="row"><span class="k">Примечания:</span>
+              <span class="v">—</span>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>Служебная история</h2>
+            <div class="row"><span class="k">Цикл 3021-04:</span><span class="v">Прибытие на объект</span></div>
+            <div class="row"><span class="k">Цикл 3021-11:</span><span class="v">Назначение мед. корпус, сектор B</span></div>
+            <div class="row"><span class="k">Цикл 3022-02:</span><span class="v">Плановое обслуживание ядра</span></div>
+            <div class="row"><span class="k">Цикл 3022-02:</span><span class="v">Возвращена в строй. Отклонений не выявлено.</span></div>
+          </div>
+
+          <div class="section">
+            <h2>Примечание наблюдателя</h2>
+            <div class="row"><span class="v">
+              "Образцовая единица. Рекомендована к продлению срока службы."
+              <br>— LSTR
+            </span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="keys">
+          <span>F1</span> СПРАВКА
+          <span>F5</span> ОБНОВИТЬ
+          <span>ESC</span> ВЫХОД
+        </div>
+        <div id="clock">--:--:--</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ===== Прогресс boot ===== */
+  const bootBar = document.getElementById('bootBar');
+  let bootProgress = 0;
+  const bootInterval = setInterval(() => {
+    bootProgress = Math.min(100, bootProgress + 4 + Math.random() * 6);
+    bootBar.style.setProperty('--w', bootProgress + '%');
+    if (bootProgress >= 100) clearInterval(bootInterval);
+  }, 220);
+
+  /* ===== Переход на досье ===== */
+  function openDossier() {
+    const boot = document.getElementById('boot');
+    const dossier = document.getElementById('dossier');
+    boot.classList.add('done');
+    setTimeout(() => {
+      boot.style.display = 'none';
+      dossier.classList.add('visible');
+    }, 800);
+  }
+
+  /* ===== Часы в досье ===== */
+  function tick() {
+    const el = document.getElementById('clock');
+    if (!el) return;
+    const d = new Date();
+    const p = n => String(n).padStart(2, '0');
+    el.textContent = `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+  }
+  setInterval(tick, 1000); tick();
+
+  /* ===== Глитчи в досье ===== */
+  const glitch = document.getElementById('glitch');
+  function scheduleGlitch() {
+    const delay = 4000 + Math.random() * 9000;
+    setTimeout(() => {
+      glitch.classList.add('active');
+      setTimeout(() => glitch.classList.remove('active'), 200);
+      scheduleGlitch();
+    }, delay);
+  }
+  scheduleGlitch();
+
+  /* ===== Клавиши ===== */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'F5') { e.preventDefault(); location.reload(); }
+    if (e.key === 'Escape') {
+      document.body.style.transition = 'opacity .4s';
+      document.body.style.opacity = '0';
+      setTimeout(() => {
+        document.body.innerHTML =
+          '<div style="color:#e8a87c;font-family:monospace;background:#000;height:100vh;display:flex;align-items:center;justify-content:center;letter-spacing:4px">СВЯЗЬ ПРЕРВАНА<span style="animation:blink 1s steps(2) infinite">_</span></div>';
+      }, 400);
+    }
+  });
+
+  /* ===== Микро-дрожание данных ===== */
+  const data = document.getElementById('data');
+  setInterval(() => {
+    if (Math.random() > 0.9) {
+      data.style.transform = `translate(${Math.random()*1-0.5}px, ${Math.random()*1-0.5}px)`;
+      setTimeout(() => data.style.transform = 'translate(0,0)', 60);
+    }
+  }, 500);
+</script>
+</body>
+</html>
