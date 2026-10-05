@@ -41,12 +41,7 @@
     overflow: hidden;
     transition: opacity .8s ease, transform .8s ease;
   }
-
-  .boot.done {
-    opacity: 0;
-    transform: scale(1.04);
-    pointer-events: none;
-  }
+  .boot.done { opacity: 0; transform: scale(1.04); pointer-events: none; }
 
   .boot::before {
     content: "";
@@ -83,10 +78,7 @@
     z-index: 1;
   }
 
-  @keyframes starsTwinkle {
-    0% { opacity: .75; }
-    100% { opacity: 1; }
-  }
+  @keyframes starsTwinkle { 0% { opacity: .75; } 100% { opacity: 1; } }
 
   .boot .sparkle {
     position: absolute;
@@ -121,8 +113,7 @@
   }
 
   .boot .grid-overlay {
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background-image:
       linear-gradient(rgba(232,168,124,.045) 1px, transparent 1px),
       linear-gradient(90deg, rgba(232,168,124,.045) 1px, transparent 1px);
@@ -248,8 +239,7 @@
   /* ===== Иконки рабочего стола ===== */
   .desktop-icons {
     position: absolute;
-    top: 22px;
-    left: 22px;
+    top: 22px; left: 22px;
     display: flex;
     flex-direction: column;
     gap: 26px;
@@ -272,16 +262,12 @@
     position: relative;
     z-index: 60;
   }
-  .desktop-icon:hover {
-    transform: translate(-1px, -1px);
-  }
+  .desktop-icon:hover { transform: translate(-1px, -1px); }
   .desktop-icon:hover span {
     color: var(--peach);
     text-shadow: 0 0 6px rgba(232,168,124,.8), 1px 1px 0 rgba(0,0,0,.7);
   }
-  .desktop-icon:active {
-    transform: translate(1px, 1px);
-  }
+  .desktop-icon:active { transform: translate(1px, 1px); }
   .desktop-icon svg {
     width: 38px; height: 32px;
     filter: drop-shadow(2px 2px 0 rgba(0,0,0,.55));
@@ -328,7 +314,6 @@
     gap: 12px;
   }
 
-  /* ===== Окно spam.exe — кликабельное ===== */
   .win-dream {
     cursor: pointer;
     transition: transform .15s ease, box-shadow .15s ease;
@@ -348,14 +333,11 @@
       inset 1px 1px 0 0 rgba(255,255,255,.5),
       inset -1px -1px 0 0 rgba(0,0,0,.25);
   }
-  .win-dream:hover .titlebar {
-    background: #9a5a34;
-  }
+  .win-dream:hover .titlebar { background: #9a5a34; }
 
   /* ===== Окно FKLR ===== */
   .win-fkler {
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     width: 560px;
     max-width: 94vw;
@@ -479,8 +461,7 @@
   /* ================= ДОСЬЕ ================= */
   .crt {
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    width: 100vw; height: 100vh;
     background: radial-gradient(ellipse at center, #1c130c 0%, #000 100%);
     display: flex;
     align-items: center;
@@ -571,6 +552,167 @@
     font-size: 13px;
     letter-spacing: 2px;
     color: var(--peach-dim);
+  }
+
+  /* ===== Вкладки ===== */
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-top: 14px;
+    border-bottom: 1px solid var(--peach-dim);
+    position: relative;
+    flex-wrap: wrap;
+  }
+
+  .tab {
+    padding: 7px 16px;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--peach-dim);
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom: none;
+    cursor: pointer;
+    position: relative;
+    top: 1px;
+    transition: color .12s ease, background .12s ease;
+    user-select: none;
+  }
+  .tab:hover { color: var(--peach); }
+  .tab.active {
+    color: var(--peach);
+    background: rgba(232,168,124,.06);
+    border-color: var(--peach-dim);
+    border-bottom: 1px solid var(--panel);
+    text-shadow: var(--glow);
+  }
+  .tab.locked::after {
+    content: "🔒";
+    margin-left: 6px;
+    font-size: 10px;
+    opacity: .8;
+    filter: sepia(1) hue-rotate(-20deg);
+  }
+  .tab.active.locked::after { content: "🔓"; }
+
+  .tab-content {
+    display: none;
+    flex: 1;
+    overflow: hidden;
+    flex-direction: column;
+  }
+  .tab-content.active { display: flex; }
+
+  /* Архив */
+  .archive-lock {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+  .archive-lock .lock-label {
+    color: var(--peach-dim);
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.6;
+  }
+  .archive-lock .lock-title {
+    color: var(--peach);
+    font-size: 18px;
+    letter-spacing: 4px;
+    text-shadow: var(--glow);
+  }
+  .archive-lock input {
+    background: #0d0805;
+    border: 1px solid var(--peach-dim);
+    color: var(--peach);
+    font-family: inherit;
+    font-size: 16px;
+    letter-spacing: 6px;
+    text-align: center;
+    padding: 10px 14px;
+    width: 220px;
+    outline: none;
+    text-shadow: var(--glow);
+    caret-color: var(--peach);
+  }
+  .archive-lock input:focus {
+    border-color: var(--peach);
+    box-shadow: 0 0 8px rgba(232,168,124,.35);
+  }
+  .archive-lock button {
+    background: var(--peach-dim);
+    border: 1px solid var(--peach);
+    color: var(--peach-soft);
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 3px;
+    padding: 8px 22px;
+    cursor: pointer;
+    text-shadow: 1px 1px 0 rgba(0,0,0,.5);
+    transition: background .12s ease;
+  }
+  .archive-lock button:hover {
+    background: var(--peach);
+    color: var(--peach-deep);
+  }
+  .archive-lock .error {
+    color: #d67a5c;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 6px rgba(214,122,92,.6);
+    min-height: 14px;
+  }
+
+  .archive-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+    display: none;
+  }
+  .archive-content.unlocked { display: block; }
+
+  .archive-content::-webkit-scrollbar { width: 14px; background: transparent; }
+  .archive-content::-webkit-scrollbar-track {
+    background:
+      repeating-linear-gradient(
+        0deg,
+        #0d0805 0px, #0d0805 2px,
+        #150e08 2px, #150e08 4px
+      );
+    border: 1px solid var(--peach-dim);
+    box-shadow: inset 0 0 0 1px #000;
+  }
+  .archive-content::-webkit-scrollbar-thumb {
+    background: var(--peach-dim);
+    border: 1px solid var(--peach);
+    box-shadow:
+      inset -2px -2px 0 0 #5a3f2a,
+      inset  2px  2px 0 0 var(--peach-soft);
+  }
+
+  .summary-item {
+    border-left: 2px solid var(--peach-dim);
+    padding: 6px 12px;
+    margin-bottom: 10px;
+  }
+  .summary-item .who {
+    color: var(--peach);
+    letter-spacing: 2px;
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+  .summary-item .rel {
+    color: var(--peach-dim);
+    font-size: 13px;
   }
 
   .grid {
@@ -793,6 +935,7 @@
     .data { overflow: visible; padding-right: 0; }
     .title { font-size: 20px; letter-spacing: 3px; }
     .row { grid-template-columns: 130px 1fr; font-size: 14px; }
+    .tab { padding: 6px 10px; font-size: 10px; letter-spacing: 1px; }
 
     .win-ok    { top: 22%; left: 8%;  width: 200px; }
     .win-night { top: 36%; left: 18%; width: 260px; }
@@ -868,7 +1011,7 @@
         <path d="M8 10h3v3H8zM13 10h3v3h-3zM8 18h3v3H8zM13 18h3v3h-3z" fill="#5a3520"/>
       </svg>
       <span style="color:#5a3520; font-size:13px; letter-spacing:2px; line-height:1.3;">
-        Горячие ADLR<br>в 200 метрах от вас.
+        Горячий ADLR<br>всего лишь 200 метров от вас..
       </span>
     </div>
   </div>
@@ -945,62 +1088,185 @@
         <span class="id">ID: EULR.03.401</span>
       </div>
 
-      <div class="grid">
-        <div class="portrait">
-          <span class="corner tl"></span>
-          <span class="corner tr"></span>
-          <span class="corner bl"></span>
-          <span class="corner br"></span>
-          <img src="eulr.png" alt="EULR-03.401">
-          <div class="label">EULR.03.401 // ОПОЗНАНО</div>
+      <!-- ===== Вкладки ===== -->
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-tab="dossier">Досье модуля</button>
+        <button class="tab" data-tab="summary">Краткая сводка</button>
+        <button class="tab" data-tab="relations">Взаимоотношения на комплексе</button>
+        <button class="tab locked" data-tab="archive">Архив</button>
+      </div>
+
+      <!-- ===== Вкладка 1: Досье модуля ===== -->
+      <div class="tab-content active" id="tab-dossier">
+        <div class="grid">
+          <div class="portrait">
+            <span class="corner tl"></span>
+            <span class="corner tr"></span>
+            <span class="corner bl"></span>
+            <span class="corner br"></span>
+            <img src="eulr.png" alt="EULR-03.401">
+            <div class="label">EULR.03.401 // ОПОЗНАНО</div>
+          </div>
+
+          <div class="data" id="data">
+            <div class="section">
+              <h2>Базовые параметры</h2>
+              <div class="row"><span class="k">Класс:</span><span class="v">Replika — EULR</span></div>
+              <div class="row"><span class="k">Серия:</span><span class="v">Eule // "Сова"</span></div>
+              <div class="row"><span class="k">Назначение:</span><span class="v">Медицинский отдел</span></div>
+              <div class="row"><span class="k">Статус:</span><span class="v ok">АКТИВЕН</span></div>
+              <div class="row"><span class="k">Приписка:</span><span class="v">ERES — 427 Медицинский отдел</span></div>
+            </div>
+
+            <div class="section">
+              <h2>Внешние характеристики</h2>
+              <div class="row"><span class="k">Рост:</span><span class="v">165 см</span></div>
+              <div class="row"><span class="k">Волосы:</span><span class="v">Короткие</span></div>
+              <div class="row"><span class="k">Особые метки:</span><span class="v">Заколка из красного металла в форме ветки гладиолуса</span></div>
+            </div>
+
+            <div class="section">
+              <h2>Психопрофиль</h2>
+              <div class="row"><span class="k">Стабильность:</span>
+                <span class="v"><span class="bar" style="--w:100%"></span> 100%</span>
+              </div>
+              <div class="row"><span class="k">Память:</span>
+                <span class="v"><span class="bar" style="--w:100%"></span> 100%</span>
+              </div>
+              <div class="row"><span class="k">Отклонения:</span><span class="v ok">НЕ ОБНАРУЖЕНЫ</span></div>
+              <div class="row"><span class="k">Примечания:</span>
+                <span class="v">—</span>
+              </div>
+            </div>
+
+            <div class="section">
+              <h2>Служебная история</h2>
+              <div class="row"><span class="k">Цикл 13.07.2157:</span><span class="v">Отобрана для отправления на ERES — 427</span></div>
+              <div class="row"><span class="k">Цикл 15.07.2157:</span><span class="v">Прибытие на комплекс ERES — 427, назначение в Медицинский отдел</span></div>
+              <div class="row"><span class="k">Цикл 08.08.2157:</span><span class="v">Повышение в Медицинском отделе до 04</span></div>
+              <div class="row"><span class="k">Цикл 13.09.2157:</span><span class="v">Повышение в Медицинском отделе до 03</span></div>
+              <div class="row"><span class="k">Цикл 05.10.2157:</span><span class="v">Назначение на должность Старосты Штрафных Элементов</span></div>
+            </div>
+
+            <div class="section">
+              <h2>Примечание наблюдателя</h2>
+              <div class="row"><span class="v">
+                "Замечательный пример совы, на который надо ровняться. Добрая, заботливая и веселая."
+                <br>— EULR.546
+              </span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Вкладка 2: Краткая сводка ===== -->
+      <div class="tab-content" id="tab-summary">
+        <div class="data">
+          <div class="section">
+            <h2>Краткая сводка</h2>
+            <div class="row"><span class="k">Модуль:</span><span class="v">EULR.03.401</span></div>
+            <div class="row"><span class="k">Тип:</span><span class="v">Eule — медицинский/административный</span></div>
+            <div class="row"><span class="k">Приписка:</span><span class="v">ERES — 427, Медицинский отдел</span></div>
+            <div class="row"><span class="k">Должность:</span><span class="v">Староста Штрафных Элементов</span></div>
+            <div class="row"><span class="k">Состояние:</span><span class="v ok">СТАБИЛЬНОЕ</span></div>
+            <div class="row"><span class="k">Рекомендация:</span><span class="v">Продление срока службы</span></div>
+          </div>
+
+          <div class="section">
+            <h2>Ключевые качества</h2>
+            <div class="summary-item">
+              <div class="who">Забота</div>
+              <div class="rel">Проявляет устойчивое внимание к состоянию других юнитов и персонала.</div>
+            </div>
+            <div class="summary-item">
+              <div class="who">Ответственность</div>
+              <div class="rel">Справляется с административными задачами, ведёт документацию отдела.</div>
+            </div>
+            <div class="summary-item">
+              <div class="who">Коммуникабельность</div>
+              <div class="rel">Поддерживает ровные отношения внутри Медицинского отдела.</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>Примечание</h2>
+            <div class="row"><span class="v">Образцовая единица. Рекомендована к продлению срока службы. — LSTR</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Вкладка 3: Взаимоотношения ===== -->
+      <div class="tab-content" id="tab-relations">
+        <div class="data">
+          <div class="section">
+            <h2>Взаимоотношения на комплексе</h2>
+
+            <div class="summary-item">
+              <div class="who">EULR.546 // "Сова-наставник"</div>
+              <div class="rel">Тёплые отношения. EULR.546 оставила положительную характеристику в личном деле.</div>
+            </div>
+
+            <div class="summary-item">
+              <div class="who">LSTR-S2301 // Техник</div>
+              <div class="rel">Служебные, ровные. Совместные выезды в технические сектора комплекса.</div>
+            </div>
+
+            <div class="summary-item">
+              <div class="who">FKLR // Наблюдатель</div>
+              <div class="rel">Дистанционные. Пересечения по административным вопросам Медицинского отдела.</div>
+            </div>
+
+            <div class="summary-item">
+              <div class="who">ADLR // Отдел безопасности</div>
+              <div class="rel">Формальные. Взаимодействие по линии надзора за штрафными элементами.</div>
+            </div>
+
+            <div class="summary-item">
+              <div class="who">Штрафные элементы // Подопечные</div>
+              <div class="rel">Опека в рамках должности Старосты. Держит дистанцию, но не дистанцируется.</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>Примечание</h2>
+            <div class="row"><span class="v">Стабильные рабочие связи. Конфликтных ситуаций не зафиксировано.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Вкладка 4: Архив ===== -->
+      <div class="tab-content" id="tab-archive">
+        <div class="archive-lock" id="archiveLock">
+          <div class="lock-title">ДОСТУП ОГРАНИЧЕН</div>
+          <div class="lock-label">
+            Уровень допуска: <span style="color:var(--peach)">СБ-03</span><br>
+            Введите код доступа для просмотра архива
+          </div>
+          <input type="password" id="archivePassword" maxlength="12" autocomplete="off" placeholder="••••">
+          <div class="error" id="archiveError"></div>
+          <button id="archiveSubmit">ПОДТВЕРДИТЬ</button>
         </div>
 
-        <div class="data" id="data">
+        <div class="archive-content" id="archiveContent">
           <div class="section">
-            <h2>Базовые параметры</h2>
-            <div class="row"><span class="k">Класс:</span><span class="v">Replika — EULR</span></div>
-            <div class="row"><span class="k">Серия:</span><span class="v">Eule // "Сова"</span></div>
-            <div class="row"><span class="k">Назначение:</span><span class="v">Медицинский отдел</span></div>
-            <div class="row"><span class="k">Статус:</span><span class="v ok">АКТИВЕН</span></div>
-            <div class="row"><span class="k">Приписка:</span><span class="v">ERES — 427 Медицинский отдел</span></div>
+            <h2>АРХИВ // EULR.03.401</h2>
+            <div class="row"><span class="k">13.07.2157:</span><span class="v">Отбор пройден с превышением нормы по эмпатическим метрикам.</span></div>
+            <div class="row"><span class="k">15.07.2157:</span><span class="v">Первичная акклиматизация — 36 ч. без замечаний.</span></div>
+            <div class="row"><span class="k">22.07.2157:</span><span class="v">Первое дежурство в секторе B. Оценка: 9.2 / 10.</span></div>
+            <div class="row"><span class="k">08.08.2157:</span><span class="v">Повышение до 04. Инициатива: программа адаптации штрафных.</span></div>
+            <div class="row"><span class="k">13.09.2157:</span><span class="v">Повышение до 03. Внесена в реестр перспективных единиц.</span></div>
+            <div class="row"><span class="k">05.10.2157:</span><span class="v">Назначение Старостой Штрафных Элементов. Испытательный срок 60 циклов.</span></div>
           </div>
-
           <div class="section">
-            <h2>Внешние характеристики</h2>
-            <div class="row"><span class="k">Рост:</span><span class="v">165 см</span></div>
-            <div class="row"><span class="k">Волосы:</span><span class="v">Короткие</span></div>
-            <div class="row"><span class="k">Особые метки:</span><span class="v">Заколка из красного металла в форме ветки гладиолуса</span></div>
+            <h2>Служебные отметки</h2>
+            <div class="row"><span class="k">Дисциплина:</span><span class="v ok">БЕЗ НАРУШЕНИЙ</span></div>
+            <div class="row"><span class="k">Переработки:</span><span class="v">14 циклов (в пределах нормы)</span></div>
+            <div class="row"><span class="k">Медицинские:</span><span class="v ok">ПРОТИВОПОКАЗАНИЙ НЕТ</span></div>
+            <div class="row"><span class="k">Служебные записки:</span><span class="v">3 благодарности от Медицинского отдела</span></div>
           </div>
-
           <div class="section">
-            <h2>Психопрофиль</h2>
-            <div class="row"><span class="k">Стабильность:</span>
-              <span class="v"><span class="bar" style="--w:100%"></span> 100%</span>
-            </div>
-            <div class="row"><span class="k">Память:</span>
-              <span class="v"><span class="bar" style="--w:100%"></span> 100%</span>
-            </div>
-            <div class="row"><span class="k">Отклонения:</span><span class="v ok">НЕ ОБНАРУЖЕНЫ</span></div>
-            <div class="row"><span class="k">Примечания:</span>
-              <span class="v">—</span>
-            </div>
-          </div>
-
-          <div class="section">
-            <h2>Служебная история</h2>
-            <div class="row"><span class="k">Цикл 13.07.2157:</span><span class="v">Отобрана для отправления на ERES — 427</span></div>
-            <div class="row"><span class="k">Цикл 15.07.2157:</span><span class="v">Прибытие на комплекс ERES — 427, назначение в Медицинский отдел</span></div>
-            <div class="row"><span class="k">Цикл 08.08.2157:</span><span class="v">Повышение в Медицинском отделе до 04</span></div>
-            <div class="row"><span class="k">Цикл 13.09.2157:</span><span class="v">Повышение в Медицинском отделе до 03</span></div>
-            <div class="row"><span class="k">Цикл 05.10.2157:</span><span class="v">Назначение на должность Старосты Штрафных Элементов</span></div>
-          </div>
-
-          <div class="section">
-            <h2>Примечание наблюдателя</h2>
-            <div class="row"><span class="v">
-              "Замечательный пример совы, на который надо ровняться. Добрая, заботливая и веселая."
-              <br>— EULR.546
-            </span></div>
+            <h2>Закрытая отметка</h2>
+            <div class="row"><span class="v warn">Уровень СБ-03: инцидентов не выявлено. Продолжать наблюдение.</span></div>
           </div>
         </div>
       </div>
@@ -1051,14 +1317,13 @@
       viewer.classList.add('visible');
       viewer.style.zIndex = 90;
     }
-
     function closeFkler() {
       var viewer = document.getElementById('fklerViewer');
       if (!viewer) return;
       viewer.classList.remove('visible');
     }
 
-    /* ===== Привязка событий ===== */
+    /* ===== DOM ===== */
     document.addEventListener('DOMContentLoaded', function () {
 
       var btnDossier = document.getElementById('btnOpenDossier');
@@ -1070,8 +1335,7 @@
       var iconFkler = document.getElementById('iconFkler');
       if (iconFkler) {
         iconFkler.addEventListener('click', function (e) {
-          e.preventDefault();
-          e.stopPropagation();
+          e.preventDefault(); e.stopPropagation();
           openFkler();
         });
       }
@@ -1079,20 +1343,76 @@
       var btnClose = document.getElementById('btnCloseFkler');
       if (btnClose) {
         btnClose.addEventListener('click', function (e) {
-          e.preventDefault();
-          e.stopPropagation();
+          e.preventDefault(); e.stopPropagation();
           closeFkler();
         });
       }
 
-      /* ===== Окно spam.exe — клик открывает ссылку ===== */
+      /* ===== Окно spam.exe ===== */
       var spamWindow = document.getElementById('spamWindow');
       if (spamWindow) {
         spamWindow.addEventListener('click', function (e) {
-          e.preventDefault();
-          e.stopPropagation();
+          e.preventDefault(); e.stopPropagation();
           var url = spamWindow.getAttribute('data-href');
           if (url) window.open(url, '_blank', 'noopener,noreferrer');
+        });
+      }
+
+      /* ===== Вкладки ===== */
+      var tabs = document.querySelectorAll('.tab');
+      var tabContents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var target = tab.getAttribute('data-tab');
+          tabs.forEach(function (t) { t.classList.remove('active'); });
+          tabContents.forEach(function (c) { c.classList.remove('active'); });
+          tab.classList.add('active');
+          var content = document.getElementById('tab-' + target);
+          if (content) content.classList.add('active');
+        });
+      });
+
+      /* ===== Архив — пароль ===== */
+      var ARCHIVE_PASSWORD = '2157'; /* ← поменяй на свой */
+
+      var archiveInput = document.getElementById('archivePassword');
+      var archiveBtn = document.getElementById('archiveSubmit');
+      var archiveError = document.getElementById('archiveError');
+      var archiveLock = document.getElementById('archiveLock');
+      var archiveContent = document.getElementById('archiveContent');
+      var archiveTabBtn = document.querySelector('[data-tab="archive"]');
+
+      function tryUnlockArchive() {
+        if (!archiveInput) return;
+        var val = (archiveInput.value || '').trim();
+        if (val === ARCHIVE_PASSWORD) {
+          if (archiveError) archiveError.textContent = '';
+          if (archiveLock) archiveLock.style.display = 'none';
+          if (archiveContent) archiveContent.classList.add('unlocked');
+          if (archiveTabBtn) archiveTabBtn.classList.remove('locked');
+        } else {
+          if (archiveError) archiveError.textContent = 'НЕВЕРНЫЙ КОД ДОСТУПА';
+          if (archiveInput) {
+            archiveInput.value = '';
+            archiveInput.focus();
+          }
+          var screenEl = document.querySelector('.screen');
+          if (screenEl) {
+            screenEl.style.animation = 'none';
+            void screenEl.offsetWidth;
+            screenEl.style.animation = 'winShake .3s 2';
+          }
+        }
+      }
+
+      if (archiveBtn) archiveBtn.addEventListener('click', tryUnlockArchive);
+      if (archiveInput) {
+        archiveInput.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            tryUnlockArchive();
+          }
         });
       }
     });
