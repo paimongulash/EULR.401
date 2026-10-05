@@ -340,11 +340,11 @@
   }
   .win-dream:hover .titlebar { background: #9a5a34; }
 
-  .win-fkler {
+    .win-fkler {
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 560px;
-    max-width: 94vw;
+    width: 900px;
+    max-width: 96vw;
     display: none;
     z-index: 80;
     animation: winOpen .25s ease-out;
@@ -352,7 +352,7 @@
   .win-fkler.visible { display: block; }
 
   @keyframes winOpen {
-    0%   { opacity: 0; transform: translate(-50%, -50%) scale(.85); }
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(.9); }
     100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   }
 
@@ -369,8 +369,8 @@
   .win-fkler .img-wrap {
     position: relative;
     width: 100%;
-    aspect-ratio: 3 / 4;
-    max-height: 72vh;
+    aspect-ratio: 16 / 9;
+    max-height: 78vh;
     overflow: hidden;
     background: #100a06;
     display: flex;
@@ -382,7 +382,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center top;
+    object-position: center;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     filter: sepia(0.2) hue-rotate(-8deg) saturate(0.9) brightness(0.95);
@@ -401,10 +401,10 @@
 
   .win-fkler .caption {
     width: 100%;
-    padding: 8px 10px;
+    padding: 10px 12px;
     text-align: center;
-    font-size: 11px;
-    letter-spacing: 2px;
+    font-size: 12px;
+    letter-spacing: 3px;
     color: var(--peach-dim);
     background: #1a1008;
     border-top: 2px solid var(--win-border);
