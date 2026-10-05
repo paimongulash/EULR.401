@@ -48,6 +48,7 @@
     pointer-events: none;
   }
 
+  /* Звёзды — декоративные, не перехватывают клики */
   .boot::before {
     content: "";
     position: absolute;
@@ -79,6 +80,8 @@
       radial-gradient(1px 1px at 36% 82%, var(--peach-dim), transparent 60%);
     animation: starsTwinkle 3s infinite alternate;
     opacity: .95;
+    pointer-events: none;
+    z-index: 1;
   }
 
   @keyframes starsTwinkle {
@@ -90,6 +93,7 @@
     position: absolute;
     width: 14px; height: 14px;
     pointer-events: none;
+    z-index: 2;
   }
   .boot .sparkle::before,
   .boot .sparkle::after {
@@ -125,6 +129,7 @@
       linear-gradient(90deg, rgba(232,168,124,.045) 1px, transparent 1px);
     background-size: 40px 40px;
     pointer-events: none;
+    z-index: 2;
   }
 
   .boot .horizon {
@@ -137,6 +142,7 @@
         transparent 0 40px,
         rgba(232,168,124,.05) 40px 42px);
     pointer-events: none;
+    z-index: 2;
   }
 
   .boot .cursor-arrow {
@@ -159,6 +165,7 @@
     100% { top: 58%; left: 62%; }
   }
 
+  /* --- Окна --- */
   .win {
     position: absolute;
     background: var(--win-face);
@@ -199,9 +206,7 @@
     text-align: center;
     cursor: default;
   }
-  .win .titlebar .btns span.close {
-    cursor: pointer;
-  }
+  .win .titlebar .btns span.close { cursor: pointer; }
   .win .titlebar .btns span.close:hover {
     background: #ff8a6a;
     color: #2a1810;
@@ -240,6 +245,7 @@
     transform: translate(2px, 2px);
   }
 
+  /* ===== Иконки рабочего стола ===== */
   .desktop-icons {
     position: absolute;
     top: 22px;
@@ -247,7 +253,7 @@
     display: flex;
     flex-direction: column;
     gap: 26px;
-    z-index: 5;
+    z-index: 60;
   }
   .desktop-icon {
     display: flex;
@@ -263,6 +269,8 @@
     cursor: pointer;
     user-select: none;
     transition: transform .1s ease;
+    position: relative;
+    z-index: 60;
   }
   .desktop-icon:hover {
     transform: translate(-1px, -1px);
@@ -278,6 +286,7 @@
     width: 38px; height: 32px;
     filter: drop-shadow(2px 2px 0 rgba(0,0,0,.55));
     image-rendering: pixelated;
+    pointer-events: none;
   }
 
   /* Позиции окон */
@@ -319,14 +328,15 @@
     gap: 12px;
   }
 
-  /* ===== Окно fkler-viewer ===== */
+  /* ===== Окно FKLR ===== */
   .win-fkler {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 420px;
+    max-width: 92vw;
     display: none;
-    z-index: 40;
+    z-index: 80;
     animation: winOpen .25s ease-out;
   }
   .win-fkler.visible { display: block; }
@@ -340,6 +350,7 @@
     padding: 0;
     background: #100a06;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     overflow: hidden;
@@ -352,6 +363,9 @@
     max-height: 60vh;
     overflow: hidden;
     background: #100a06;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .win-fkler .img-wrap img {
@@ -378,6 +392,7 @@
   }
 
   .win-fkler .caption {
+    width: 100%;
     padding: 6px 10px;
     text-align: center;
     font-size: 10px;
@@ -399,6 +414,7 @@
     text-align: center;
     z-index: 15;
     text-shadow: var(--glow);
+    pointer-events: none;
   }
   .boot .loading .bar {
     width: 100%;
@@ -760,7 +776,7 @@
     .win-notes { top: 70%; left: 30%; width: 260px; }
     .desktop-icons { display: none; }
 
-    .win-fkler { width: 90vw; }
+    .win-fkler { width: 92vw; }
   }
 </style>
 </head>
@@ -778,14 +794,14 @@
   <span class="sparkle s5"></span>
 
   <div class="desktop-icons">
-    <div class="desktop-icon">
+    <div class="desktop-icon" data-action="dossier">
       <svg viewBox="0 0 38 32" shape-rendering="crispEdges">
         <path d="M2 2h14l3 4h17v22H2z" fill="#f2c4a0" stroke="#4a2f1c" stroke-width="1.5"/>
         <path d="M2 8h34" stroke="#4a2f1c" stroke-width="1.5"/>
       </svg>
       <span>Досье EULR.401</span>
     </div>
-    <div class="desktop-icon" onclick="openFkler()">
+    <div class="desktop-icon" data-action="fkler" id="iconFkler">
       <svg viewBox="0 0 38 32" shape-rendering="crispEdges">
         <path d="M2 2h14l3 4h17v22H2z" fill="#e8a87c" stroke="#4a2f1c" stroke-width="1.5"/>
         <path d="M2 8h34" stroke="#4a2f1c" stroke-width="1.5"/>
@@ -800,7 +816,7 @@
       <div class="btns"><span>_</span><span>□</span><span>×</span></div>
     </div>
     <div class="body" style="text-align:center; padding: 22px 12px;">
-      <button class="ok-btn" onclick="openDossier()">OPEN DOSSIER</button>
+      <button class="ok-btn" id="btnOpenDossier">OPEN DOSSIER</button>
     </div>
   </div>
 
@@ -861,7 +877,7 @@
       <div class="btns">
         <span>_</span>
         <span>□</span>
-        <span class="close" onclick="closeFkler()">×</span>
+        <span class="close" id="btnCloseFkler">×</span>
       </div>
     </div>
     <div class="body">
@@ -976,82 +992,133 @@
 </div>
 
 <script>
-  const bootBar = document.getElementById('bootBar');
-  let bootProgress = 0;
-  const bootInterval = setInterval(() => {
-    bootProgress = Math.min(100, bootProgress + 4 + Math.random() * 6);
-    bootBar.style.setProperty('--w', bootProgress + '%');
-    if (bootProgress >= 100) clearInterval(bootInterval);
-  }, 220);
+  (function () {
+    "use strict";
 
-  function openDossier() {
-    const boot = document.getElementById('boot');
-    const dossier = document.getElementById('dossier');
-    boot.classList.add('done');
-    setTimeout(() => {
-      boot.style.display = 'none';
-      dossier.classList.add('visible');
-    }, 800);
-  }
+    /* ===== Прогресс boot ===== */
+    var bootBar = document.getElementById('bootBar');
+    var bootProgress = 0;
+    if (bootBar) {
+      var bootInterval = setInterval(function () {
+        bootProgress = Math.min(100, bootProgress + 4 + Math.random() * 6);
+        bootBar.style.setProperty('--w', bootProgress + '%');
+        if (bootProgress >= 100) clearInterval(bootInterval);
+      }, 220);
+    }
 
-  /* ===== Открытие/закрытие окна FKLR ===== */
-  function openFkler() {
-    const viewer = document.getElementById('fklerViewer');
-    viewer.classList.add('visible');
-    /* Поднимаем поверх остальных окон */
-    viewer.style.zIndex = 50;
-  }
+    /* ===== Переход на досье ===== */
+    function openDossier() {
+      var boot = document.getElementById('boot');
+      var dossier = document.getElementById('dossier');
+      if (!boot || !dossier) return;
+      boot.classList.add('done');
+      setTimeout(function () {
+        boot.style.display = 'none';
+        dossier.classList.add('visible');
+      }, 800);
+    }
 
-  function closeFkler() {
-    const viewer = document.getElementById('fklerViewer');
-    viewer.classList.remove('visible');
-  }
+    /* ===== FKLR viewer ===== */
+    function openFkler() {
+      var viewer = document.getElementById('fklerViewer');
+      if (!viewer) return;
+      viewer.classList.add('visible');
+      viewer.style.zIndex = 90;
+    }
 
-  /* Esc закрывает окно FKLR, если оно открыто. Иначе — общий выход */
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      const viewer = document.getElementById('fklerViewer');
-      if (viewer && viewer.classList.contains('visible')) {
-        closeFkler();
-        return;
+    function closeFkler() {
+      var viewer = document.getElementById('fklerViewer');
+      if (!viewer) return;
+      viewer.classList.remove('visible');
+    }
+
+    /* ===== Привязка событий ===== */
+    document.addEventListener('DOMContentLoaded', function () {
+
+      // Кнопка OPEN DOSSIER
+      var btnDossier = document.getElementById('btnOpenDossier');
+      if (btnDossier) btnDossier.addEventListener('click', openDossier);
+
+      // Папка "Досье EULR.401" — тоже открывает досье
+      var iconDossier = document.querySelector('[data-action="dossier"]');
+      if (iconDossier) iconDossier.addEventListener('click', openDossier);
+
+      // Папка "Нюдсы FKLR" — открывает окно
+      var iconFkler = document.getElementById('iconFkler');
+      if (iconFkler) {
+        iconFkler.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          openFkler();
+        });
       }
-      document.body.style.transition = 'opacity .4s';
-      document.body.style.opacity = '0';
-      setTimeout(() => {
-        document.body.innerHTML =
-          '<div style="color:#e8a87c;font-family:monospace;background:#000;height:100vh;display:flex;align-items:center;justify-content:center;letter-spacing:4px">СВЯЗЬ ПРЕРВАНА<span style="animation:blink 1s steps(2) infinite">_</span></div>';
-      }, 400);
+
+      // Кнопка × в окне FKLR — закрывает окно
+      var btnClose = document.getElementById('btnCloseFkler');
+      if (btnClose) {
+        btnClose.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeFkler();
+        });
+      }
+
+      // Клик по затемнённой области — не нужно, но оставим закрытие на Esc
+    });
+
+    /* ===== Часы ===== */
+    function tick() {
+      var el = document.getElementById('clock');
+      if (!el) return;
+      var d = new Date();
+      var p = function (n) { return String(n).padStart(2, '0'); };
+      el.textContent = p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
     }
-    if (e.key === 'F5') { e.preventDefault(); location.reload(); }
-  });
+    setInterval(tick, 1000); tick();
 
-  function tick() {
-    const el = document.getElementById('clock');
-    if (!el) return;
-    const d = new Date();
-    const p = n => String(n).padStart(2, '0');
-    el.textContent = `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
-  }
-  setInterval(tick, 1000); tick();
-
-  const glitch = document.getElementById('glitch');
-  function scheduleGlitch() {
-    const delay = 4000 + Math.random() * 9000;
-    setTimeout(() => {
-      glitch.classList.add('active');
-      setTimeout(() => glitch.classList.remove('active'), 200);
-      scheduleGlitch();
-    }, delay);
-  }
-  scheduleGlitch();
-
-  const data = document.getElementById('data');
-  setInterval(() => {
-    if (Math.random() > 0.9) {
-      data.style.transform = `translate(${Math.random()*1-0.5}px, ${Math.random()*1-0.5}px)`;
-      setTimeout(() => data.style.transform = 'translate(0,0)', 60);
+    /* ===== Глитчи ===== */
+    var glitch = document.getElementById('glitch');
+    function scheduleGlitch() {
+      var delay = 4000 + Math.random() * 9000;
+      setTimeout(function () {
+        if (!glitch) return;
+        glitch.classList.add('active');
+        setTimeout(function () { glitch.classList.remove('active'); }, 200);
+        scheduleGlitch();
+      }, delay);
     }
-  }, 500);
+    scheduleGlitch();
+
+    /* ===== Клавиши ===== */
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        var viewer = document.getElementById('fklerViewer');
+        if (viewer && viewer.classList.contains('visible')) {
+          closeFkler();
+          return;
+        }
+        document.body.style.transition = 'opacity .4s';
+        document.body.style.opacity = '0';
+        setTimeout(function () {
+          document.body.innerHTML =
+            '<div style="color:#e8a87c;font-family:monospace;background:#000;height:100vh;display:flex;align-items:center;justify-content:center;letter-spacing:4px">СВЯЗЬ ПРЕРВАНА<span style="animation:blink 1s steps(2) infinite">_</span></div>';
+        }, 400);
+      }
+      if (e.key === 'F5') { e.preventDefault(); location.reload(); }
+    });
+
+    /* ===== Дрожание данных ===== */
+    var data = document.getElementById('data');
+    if (data) {
+      setInterval(function () {
+        if (Math.random() > 0.9) {
+          data.style.transform = 'translate(' + (Math.random()*1-0.5) + 'px,' + (Math.random()*1-0.5) + 'px)';
+          setTimeout(function () { data.style.transform = 'translate(0,0)'; }, 60);
+        }
+      }, 500);
+    }
+
+  })();
 </script>
 </body>
 </html>
