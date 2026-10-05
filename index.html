@@ -23,6 +23,51 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  /* ===== УНИВЕРСАЛЬНЫЙ ПИКСЕЛЬНЫЙ СКРОЛЛБАР ===== */
+  *::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+    background: transparent;
+  }
+  *::-webkit-scrollbar-track {
+    background:
+      repeating-linear-gradient(
+        0deg,
+        #0d0805 0px, #0d0805 2px,
+        #150e08 2px, #150e08 4px
+      );
+    border: 1px solid var(--peach-dim);
+    box-shadow: inset 0 0 0 1px #000;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: var(--peach-dim);
+    border: 1px solid var(--peach);
+    box-shadow:
+      inset -2px -2px 0 0 #5a3f2a,
+      inset  2px  2px 0 0 var(--peach-soft);
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--peach);
+    border-color: var(--peach-soft);
+    box-shadow:
+      inset -2px -2px 0 0 #7a5638,
+      inset  2px  2px 0 0 #f8d9bf;
+  }
+  *::-webkit-scrollbar-thumb:active {
+    background: var(--peach-soft);
+    border-color: #fff2e2;
+    box-shadow:
+      inset  2px  2px 0 0 #7a5638,
+      inset -2px -2px 0 0 #f8d9bf;
+  }
+  *::-webkit-scrollbar-corner { background: transparent; }
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--peach-dim) #0d0805;
+  }
+
   html, body {
     height: 100%;
     background: #000;
@@ -510,6 +555,7 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
+    overflow: hidden;
     box-shadow:
       0 0 0 2px #000 inset,
       0 0 30px rgba(232,168,124,.13),
@@ -619,55 +665,6 @@
     font-size: 15px;
     line-height: 1.55;
   }
-
-  /* Пиксельный скроллбар */
-  .data::-webkit-scrollbar,
-  .archive-content::-webkit-scrollbar {
-    width: 14px;
-    background: transparent;
-  }
-
-  .data::-webkit-scrollbar-track,
-  .archive-content::-webkit-scrollbar-track {
-    background:
-      repeating-linear-gradient(
-        0deg,
-        #0d0805 0px, #0d0805 2px,
-        #150e08 2px, #150e08 4px
-      );
-    border: 1px solid var(--peach-dim);
-    box-shadow: inset 0 0 0 1px #000;
-  }
-
-  .data::-webkit-scrollbar-thumb,
-  .archive-content::-webkit-scrollbar-thumb {
-    background: var(--peach-dim);
-    border: 1px solid var(--peach);
-    box-shadow:
-      inset -2px -2px 0 0 #5a3f2a,
-      inset  2px  2px 0 0 var(--peach-soft);
-  }
-
-  .data::-webkit-scrollbar-thumb:hover,
-  .archive-content::-webkit-scrollbar-thumb:hover {
-    background: var(--peach);
-    border-color: var(--peach-soft);
-    box-shadow:
-      inset -2px -2px 0 0 #7a5638,
-      inset  2px  2px 0 0 #f8d9bf;
-  }
-
-  .data::-webkit-scrollbar-thumb:active,
-  .archive-content::-webkit-scrollbar-thumb:active {
-    background: var(--peach-soft);
-    border-color: #fff2e2;
-    box-shadow:
-      inset  2px  2px 0 0 #7a5638,
-      inset -2px -2px 0 0 #f8d9bf;
-  }
-
-  .data::-webkit-scrollbar-corner,
-  .archive-content::-webkit-scrollbar-corner { background: transparent; }
 
   .tab-content > .grid {
     margin-top: 18px;
